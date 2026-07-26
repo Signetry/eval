@@ -1,0 +1,43 @@
+name: eval
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install umbra-core
+        run: |
+          # umbra-eval needs umbra-core >= 0.3.0 (capability graph, plan binding,
+          # masked verifier, gates, admit-extension). Until 0.3.0 is on PyPI, install
+          # from the umbra-core feature branch. After umbra-core#25 merges, switch to
+          # `@main`; after the 0.3.0 release, to plain `pip install .`.
+          pip install "git+https://github.com/bkd-dotcom/umbra-core.git@feat/capability-graph-plan-binding-masked-verifier"
+          pip install -e ".[dev]"
+      - name: Ruff
+        run: ruff check umbra_eval/ tests/
+      - name: Tests
+        run: pytest -q
+      - name: Publish the adversarial report (artifact)
+        if: always()
+        run: |
+          umbra-eval run --markdown > eval-report.md || true
+          umbra-eval run --json > eval-report.json || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: umbra-eval-report-${{ matrix.python-version }}
+          path: |
+            eval-report.md
+            eval-report.json
+          if-no-files-found: ignore
