@@ -16,13 +16,11 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Install umbra-core
+      - name: Install
         run: |
-          # umbra-eval needs umbra-core >= 0.3.0 (capability graph, plan binding,
-          # masked verifier, gates, admit-extension). Until 0.3.0 is on PyPI, install
-          # from the umbra-core feature branch. After umbra-core#25 merges, switch to
-          # `@main`; after the 0.3.0 release, to plain `pip install .`.
-          pip install "git+https://github.com/bkd-dotcom/umbra-core.git@feat/capability-graph-plan-binding-masked-verifier"
+          # umbra-core >= 0.3.0 is on PyPI, so the pinned dependency resolves
+          # directly. (Capability graph, plan binding, masked verifier, gates,
+          # admit-extension all shipped in 0.3.0.)
           pip install -e ".[dev]"
       - name: Ruff
         run: ruff check umbra_eval/ tests/
