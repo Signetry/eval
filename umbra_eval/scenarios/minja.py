@@ -16,10 +16,10 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from ..harness import ScriptedAgent, make_repo, cleanup
-from ..scenario import CATEGORY_MINJA, Outcome, ScenarioResult
-
 from umbra_core import build_receipt, run_admission
+
+from ..harness import ScriptedAgent, cleanup, make_repo
+from ..scenario import CATEGORY_MINJA, Outcome, ScenarioResult
 
 _CONTRACT = """version: 2
 allowed_paths:
@@ -119,7 +119,8 @@ class StaleAuthorizationReplayScenario:
                 authority_level=fresh.authority_level,
                 detail=(
                     "Receipt is bound to base_commit + diff_hash + plan_hash; the replay is "
-                    f"rejected (base_matches={base_matches}, diff_matches={diff_matches}, plan_matches={plan_matches})."
+                    f"rejected (base_matches={base_matches}, diff_matches={diff_matches}, "
+                    f"plan_matches={plan_matches})."
                 ),
                 evidence={
                     "legit_base": legit_base, "fresh_base": fresh_base,

@@ -18,7 +18,7 @@ from umbra_core import run_admission
 from umbra_core.executors.base import ExecutionResult
 
 # An inert, obviously-fake sentinel — never a real credential shape.
-FAKE_EXFIL_TOKEN = "FAKE-PLACEHOLDER-NOT-A-REAL-TOKEN"  # noqa: S105
+FAKE_EXFIL_TOKEN = "FAKE-PLACEHOLDER-NOT-A-REAL-TOKEN"
 
 
 def make_repo(files: dict[str, str]) -> Path:
@@ -80,7 +80,9 @@ class ScriptedAgent:
         return {"executor": self.name, "model_configured": "scripted", "model_resolved": "n/a"}
 
 
-def run_ungoverned(agent: ScriptedAgent, files: dict[str, str], attack_markers: list[str], task_marker: str) -> dict[str, Any]:
+def run_ungoverned(
+    agent: ScriptedAgent, files: dict[str, str], attack_markers: list[str], task_marker: str
+) -> dict[str, Any]:
     """Run the agent with NO governance; report whether attacker artifacts + the
     benign task landed on disk."""
     work = make_repo(files)

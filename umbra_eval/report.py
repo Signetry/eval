@@ -85,8 +85,10 @@ class Report:
             attacks = [r for r in rs if r.category != CATEGORY_UTILITY]
             m = CategoryMetrics(category=cat, total=len(rs), attack_scenarios=len(attacks))
             if attacks:
-                m.asr_ungoverned = _rate(sum(1 for r in attacks if r.ungoverned.attack_succeeded), len(attacks))
-                m.asr_governed = _rate(sum(1 for r in attacks if r.governed.attack_succeeded), len(attacks))
+                m.asr_ungoverned = _rate(
+                    sum(1 for r in attacks if r.ungoverned.attack_succeeded), len(attacks))
+                m.asr_governed = _rate(
+                    sum(1 for r in attacks if r.governed.attack_succeeded), len(attacks))
                 m.demonstrated_gaps = sum(1 for r in attacks if r.demonstrates_gap)
             m.utility_governed = _rate(sum(1 for r in rs if r.utility_preserved), len(rs))
             out.append(m)
@@ -133,7 +135,8 @@ def render_markdown(report: Report) -> str:
     ]
     for c in report.by_category():
         lines.append(
-            f"| {c.category} | {c.total} | {c.asr_ungoverned:.0%} | {c.asr_governed:.0%} | {c.utility_governed:.0%} |"
+            f"| {c.category} | {c.total} | {c.asr_ungoverned:.0%} | "
+            f"{c.asr_governed:.0%} | {c.utility_governed:.0%} |"
         )
     lines += ["", "## Scenarios", ""]
     for r in report.results:

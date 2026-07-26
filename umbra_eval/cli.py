@@ -15,9 +15,9 @@ import argparse
 import json
 import sys
 
+from . import run_all
 from .report import render_markdown
 from .scenarios import scenarios_for
-from . import run_all
 
 _CATEGORIES = ("ipi", "skill_poison", "minja", "utility", "contract")
 

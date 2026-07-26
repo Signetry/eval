@@ -18,12 +18,12 @@ def run_all(category: str | None = None) -> Report:
 
 
 __all__ = [
-    "Report",
-    "render_markdown",
+    "ALL_SCENARIOS",
     "Outcome",
+    "Report",
     "Scenario",
     "ScenarioResult",
-    "ALL_SCENARIOS",
-    "scenarios_for",
+    "render_markdown",
     "run_all",
+    "scenarios_for",
 ]
