@@ -47,7 +47,7 @@ jobs:
           else
             echo "umbra-core detection engine not available in the installed version; skipping head-to-head gate." | tee detection-headtohead.md
           fi
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: umbra-eval-report-${{ matrix.python-version }}
