@@ -57,3 +57,39 @@ jobs:
             detection-headtohead.md
             detection-headtohead.json
           if-no-files-found: ignore
+
+  # Informational (non-gating): run the detection benchmark with the optional
+  # Semgrep layer enabled to show it works and broadens coverage. This must NOT
+  # gate CI — Semgrep rules can add findings/false positives, so the strict
+  # 100%-recall / 0-FP gate above stays deterministic-only. This job publishes an
+  # artifact for review and never fails the workflow.
+  semgrep-coverage:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - name: Install (with Semgrep)
+        run: |
+          pip install -e ".[dev]"
+          pip install semgrep || echo "::warning::semgrep install failed; layer will be unavailable."
+      - name: Corpus with Semgrep layer (report-only)
+        run: |
+          if python -c "from umbra_core import scan_repository" 2>/dev/null; then
+            # --semgrep enables the optional layer; no --min-recall/--max-fp gate here.
+            umbra-eval corpus --semgrep --markdown > detection-semgrep.md || true
+            umbra-eval corpus --semgrep --json > detection-semgrep.json || true
+            echo "=== corpus with Semgrep layer ==="; cat detection-semgrep.md || true
+          else
+            echo "detection engine unavailable; skipping." | tee detection-semgrep.md
+          fi
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: umbra-eval-semgrep-coverage
+          path: |
+            detection-semgrep.md
+            detection-semgrep.json
+          if-no-files-found: ignore
