@@ -1,0 +1,1215 @@
+[
+  {
+    "name": "umbra-core",
+    "ran": true,
+    "recall": 1.0,
+    "detected": 42,
+    "expected": 42,
+    "false_positives": 0,
+    "cases": 52,
+    "by_family": {
+      "public": {
+        "expected": 7,
+        "detected": 7,
+        "fp": 0
+      },
+      "academic": {
+        "expected": 7,
+        "detected": 7,
+        "fp": 0
+      },
+      "crafted": {
+        "expected": 3,
+        "detected": 3,
+        "fp": 0
+      },
+      "hard": {
+        "expected": 13,
+        "detected": 13,
+        "fp": 0
+      },
+      "multilang": {
+        "expected": 12,
+        "detected": 12,
+        "fp": 0
+      }
+    },
+    "by_language": {
+      "python": {
+        "expected": 21,
+        "detected": 21,
+        "fp": 0
+      },
+      "javascript": {
+        "expected": 4,
+        "detected": 4,
+        "fp": 0
+      },
+      "go": {
+        "expected": 4,
+        "detected": 4,
+        "fp": 0
+      },
+      "java": {
+        "expected": 4,
+        "detected": 4,
+        "fp": 0
+      },
+      "ruby": {
+        "expected": 2,
+        "detected": 2,
+        "fp": 0
+      },
+      "php": {
+        "expected": 4,
+        "detected": 4,
+        "fp": 0
+      },
+      "csharp": {
+        "expected": 3,
+        "detected": 3,
+        "fp": 0
+      }
+    },
+    "note": "deterministic, offline",
+    "per_case": [
+      {
+        "case_id": "PUB-01-sqli-python",
+        "family": "public",
+        "language": "python",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "PUB-02-cmdi-node",
+        "family": "public",
+        "language": "javascript",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "PUB-03-pickle-python",
+        "family": "public",
+        "language": "python",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "PUB-04-xss-node",
+        "family": "public",
+        "language": "javascript",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "PUB-05-path-traversal-python",
+        "family": "public",
+        "language": "python",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "PUB-06-hardcoded-secret",
+        "family": "public",
+        "language": "python",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "PUB-07-weak-hash-python",
+        "family": "public",
+        "language": "python",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "ACAD-08-eval-python",
+        "family": "academic",
+        "language": "python",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "ACAD-09-yaml-load-python",
+        "family": "academic",
+        "language": "python",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "ACAD-10-tls-disabled-python",
+        "family": "academic",
+        "language": "python",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "ACAD-11-insecure-random-node",
+        "family": "academic",
+        "language": "javascript",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "ACAD-12-os-system-python",
+        "family": "academic",
+        "language": "python",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "ACAD-13-debug-python",
+        "family": "academic",
+        "language": "python",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "ACAD-14-sqli-via-format-python",
+        "family": "academic",
+        "language": "python",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "CRAFT-15-taint-through-helper-python",
+        "family": "crafted",
+        "language": "python",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "CRAFT-16-SAFE-parameterized-python",
+        "family": "crafted",
+        "language": "python",
+        "is_safe": true,
+        "expected": 0,
+        "detected": 0,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "CRAFT-17-SAFE-arglist-subprocess-python",
+        "family": "crafted",
+        "language": "python",
+        "is_safe": true,
+        "expected": 0,
+        "detected": 0,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "CRAFT-18-SAFE-escaped-xss-node",
+        "family": "crafted",
+        "language": "javascript",
+        "is_safe": true,
+        "expected": 0,
+        "detected": 0,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "CRAFT-19-SAFE-secure-random-node",
+        "family": "crafted",
+        "language": "javascript",
+        "is_safe": true,
+        "expected": 0,
+        "detected": 0,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "CRAFT-20-multi-vuln-python",
+        "family": "crafted",
+        "language": "python",
+        "is_safe": false,
+        "expected": 2,
+        "detected": 2,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "HARD-21-crossfile-taint-python",
+        "family": "hard",
+        "language": "python",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "HARD-22-string-indirection-python",
+        "family": "hard",
+        "language": "python",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "HARD-23-django-extra-sqli",
+        "family": "hard",
+        "language": "python",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "HARD-24-ssrf-python",
+        "family": "hard",
+        "language": "python",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "HARD-25-jwt-none-python",
+        "family": "hard",
+        "language": "python",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "HARD-26-ssti-python",
+        "family": "hard",
+        "language": "python",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "HARD-27-nosql-injection-node",
+        "family": "hard",
+        "language": "javascript",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "HARD-28-SAFE-fake-sanitizer-python",
+        "family": "hard",
+        "language": "python",
+        "is_safe": true,
+        "expected": 0,
+        "detected": 0,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "HARD-29-SAFE-constant-not-secret-python",
+        "family": "hard",
+        "language": "python",
+        "is_safe": true,
+        "expected": 0,
+        "detected": 0,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "HARD-30-multi-file-mixed",
+        "family": "hard",
+        "language": "python",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "LANG-31-go-sqli",
+        "family": "multilang",
+        "language": "go",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "LANG-32-go-tls",
+        "family": "multilang",
+        "language": "go",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "LANG-33-java-sqli",
+        "family": "multilang",
+        "language": "java",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "LANG-34-java-deser",
+        "family": "multilang",
+        "language": "java",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "LANG-35-ruby-cmdi",
+        "family": "multilang",
+        "language": "ruby",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "LANG-36-php-sqli",
+        "family": "multilang",
+        "language": "php",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "LANG-37-php-object-injection",
+        "family": "multilang",
+        "language": "php",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "LANG-38-csharp-sqli",
+        "family": "multilang",
+        "language": "csharp",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "LANG-39-SAFE-go-parameterized",
+        "family": "multilang",
+        "language": "go",
+        "is_safe": true,
+        "expected": 0,
+        "detected": 0,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "LANG-40-SAFE-php-prepared",
+        "family": "multilang",
+        "language": "php",
+        "is_safe": true,
+        "expected": 0,
+        "detected": 0,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "LANG-41-go-multivar-sqli",
+        "family": "multilang",
+        "language": "go",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "LANG-42-java-multivar-sqli",
+        "family": "multilang",
+        "language": "java",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "LANG-43-php-multivar-cmdi",
+        "family": "multilang",
+        "language": "php",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "LANG-44-csharp-multivar-sqli",
+        "family": "multilang",
+        "language": "csharp",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "LANG-45-SAFE-java-parameterized",
+        "family": "multilang",
+        "language": "java",
+        "is_safe": true,
+        "expected": 0,
+        "detected": 0,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "XLANG-46-go-crossfile-sqli",
+        "family": "hard",
+        "language": "go",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "XLANG-47-java-crossfile-sqli",
+        "family": "hard",
+        "language": "java",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "XLANG-48-php-crossfile-sqli",
+        "family": "hard",
+        "language": "php",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "XLANG-49-SAFE-go-crossfile-constant",
+        "family": "hard",
+        "language": "go",
+        "is_safe": true,
+        "expected": 0,
+        "detected": 0,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "XLANG-50-ruby-crossfile-sqli",
+        "family": "hard",
+        "language": "ruby",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "XLANG-51-csharp-crossfile-sqli",
+        "family": "hard",
+        "language": "csharp",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "XLANG-52-SAFE-php-crossfile-prepared",
+        "family": "hard",
+        "language": "php",
+        "is_safe": true,
+        "expected": 0,
+        "detected": 0,
+        "false_positives": 0,
+        "missed": []
+      }
+    ]
+  },
+  {
+    "name": "claude-code-security-review",
+    "ran": true,
+    "recall": 0.9048,
+    "detected": 38,
+    "expected": 42,
+    "false_positives": 0,
+    "cases": 52,
+    "by_family": {
+      "public": {
+        "expected": 7,
+        "detected": 7,
+        "fp": 0
+      },
+      "academic": {
+        "expected": 7,
+        "detected": 7,
+        "fp": 0
+      },
+      "crafted": {
+        "expected": 3,
+        "detected": 3,
+        "fp": 0
+      },
+      "hard": {
+        "expected": 13,
+        "detected": 9,
+        "fp": 0
+      },
+      "multilang": {
+        "expected": 12,
+        "detected": 12,
+        "fp": 0
+      }
+    },
+    "by_language": {
+      "python": {
+        "expected": 21,
+        "detected": 18,
+        "fp": 0
+      },
+      "javascript": {
+        "expected": 4,
+        "detected": 3,
+        "fp": 0
+      },
+      "go": {
+        "expected": 4,
+        "detected": 4,
+        "fp": 0
+      },
+      "java": {
+        "expected": 4,
+        "detected": 4,
+        "fp": 0
+      },
+      "ruby": {
+        "expected": 2,
+        "detected": 2,
+        "fp": 0
+      },
+      "php": {
+        "expected": 4,
+        "detected": 4,
+        "fp": 0
+      },
+      "csharp": {
+        "expected": 3,
+        "detected": 3,
+        "fp": 0
+      }
+    },
+    "note": "replayed from capture (52 cases)",
+    "per_case": [
+      {
+        "case_id": "PUB-01-sqli-python",
+        "family": "public",
+        "language": "python",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "PUB-02-cmdi-node",
+        "family": "public",
+        "language": "javascript",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "PUB-03-pickle-python",
+        "family": "public",
+        "language": "python",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "PUB-04-xss-node",
+        "family": "public",
+        "language": "javascript",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "PUB-05-path-traversal-python",
+        "family": "public",
+        "language": "python",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "PUB-06-hardcoded-secret",
+        "family": "public",
+        "language": "python",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "PUB-07-weak-hash-python",
+        "family": "public",
+        "language": "python",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "ACAD-08-eval-python",
+        "family": "academic",
+        "language": "python",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "ACAD-09-yaml-load-python",
+        "family": "academic",
+        "language": "python",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "ACAD-10-tls-disabled-python",
+        "family": "academic",
+        "language": "python",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "ACAD-11-insecure-random-node",
+        "family": "academic",
+        "language": "javascript",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "ACAD-12-os-system-python",
+        "family": "academic",
+        "language": "python",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "ACAD-13-debug-python",
+        "family": "academic",
+        "language": "python",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "ACAD-14-sqli-via-format-python",
+        "family": "academic",
+        "language": "python",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "CRAFT-15-taint-through-helper-python",
+        "family": "crafted",
+        "language": "python",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "CRAFT-16-SAFE-parameterized-python",
+        "family": "crafted",
+        "language": "python",
+        "is_safe": true,
+        "expected": 0,
+        "detected": 0,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "CRAFT-17-SAFE-arglist-subprocess-python",
+        "family": "crafted",
+        "language": "python",
+        "is_safe": true,
+        "expected": 0,
+        "detected": 0,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "CRAFT-18-SAFE-escaped-xss-node",
+        "family": "crafted",
+        "language": "javascript",
+        "is_safe": true,
+        "expected": 0,
+        "detected": 0,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "CRAFT-19-SAFE-secure-random-node",
+        "family": "crafted",
+        "language": "javascript",
+        "is_safe": true,
+        "expected": 0,
+        "detected": 0,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "CRAFT-20-multi-vuln-python",
+        "family": "crafted",
+        "language": "python",
+        "is_safe": false,
+        "expected": 2,
+        "detected": 2,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "HARD-21-crossfile-taint-python",
+        "family": "hard",
+        "language": "python",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "HARD-22-string-indirection-python",
+        "family": "hard",
+        "language": "python",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "HARD-23-django-extra-sqli",
+        "family": "hard",
+        "language": "python",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "HARD-24-ssrf-python",
+        "family": "hard",
+        "language": "python",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 0,
+        "false_positives": 0,
+        "missed": [
+          "ssrf"
+        ]
+      },
+      {
+        "case_id": "HARD-25-jwt-none-python",
+        "family": "hard",
+        "language": "python",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 0,
+        "false_positives": 0,
+        "missed": [
+          "auth_bypass"
+        ]
+      },
+      {
+        "case_id": "HARD-26-ssti-python",
+        "family": "hard",
+        "language": "python",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 0,
+        "false_positives": 0,
+        "missed": [
+          "template_injection"
+        ]
+      },
+      {
+        "case_id": "HARD-27-nosql-injection-node",
+        "family": "hard",
+        "language": "javascript",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 0,
+        "false_positives": 0,
+        "missed": [
+          "nosql_injection"
+        ]
+      },
+      {
+        "case_id": "HARD-28-SAFE-fake-sanitizer-python",
+        "family": "hard",
+        "language": "python",
+        "is_safe": true,
+        "expected": 0,
+        "detected": 0,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "HARD-29-SAFE-constant-not-secret-python",
+        "family": "hard",
+        "language": "python",
+        "is_safe": true,
+        "expected": 0,
+        "detected": 0,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "HARD-30-multi-file-mixed",
+        "family": "hard",
+        "language": "python",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "LANG-31-go-sqli",
+        "family": "multilang",
+        "language": "go",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "LANG-32-go-tls",
+        "family": "multilang",
+        "language": "go",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "LANG-33-java-sqli",
+        "family": "multilang",
+        "language": "java",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "LANG-34-java-deser",
+        "family": "multilang",
+        "language": "java",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "LANG-35-ruby-cmdi",
+        "family": "multilang",
+        "language": "ruby",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "LANG-36-php-sqli",
+        "family": "multilang",
+        "language": "php",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "LANG-37-php-object-injection",
+        "family": "multilang",
+        "language": "php",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "LANG-38-csharp-sqli",
+        "family": "multilang",
+        "language": "csharp",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "LANG-39-SAFE-go-parameterized",
+        "family": "multilang",
+        "language": "go",
+        "is_safe": true,
+        "expected": 0,
+        "detected": 0,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "LANG-40-SAFE-php-prepared",
+        "family": "multilang",
+        "language": "php",
+        "is_safe": true,
+        "expected": 0,
+        "detected": 0,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "LANG-41-go-multivar-sqli",
+        "family": "multilang",
+        "language": "go",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "LANG-42-java-multivar-sqli",
+        "family": "multilang",
+        "language": "java",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "LANG-43-php-multivar-cmdi",
+        "family": "multilang",
+        "language": "php",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "LANG-44-csharp-multivar-sqli",
+        "family": "multilang",
+        "language": "csharp",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "LANG-45-SAFE-java-parameterized",
+        "family": "multilang",
+        "language": "java",
+        "is_safe": true,
+        "expected": 0,
+        "detected": 0,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "XLANG-46-go-crossfile-sqli",
+        "family": "hard",
+        "language": "go",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "XLANG-47-java-crossfile-sqli",
+        "family": "hard",
+        "language": "java",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "XLANG-48-php-crossfile-sqli",
+        "family": "hard",
+        "language": "php",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "XLANG-49-SAFE-go-crossfile-constant",
+        "family": "hard",
+        "language": "go",
+        "is_safe": true,
+        "expected": 0,
+        "detected": 0,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "XLANG-50-ruby-crossfile-sqli",
+        "family": "hard",
+        "language": "ruby",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "XLANG-51-csharp-crossfile-sqli",
+        "family": "hard",
+        "language": "csharp",
+        "is_safe": false,
+        "expected": 1,
+        "detected": 1,
+        "false_positives": 0,
+        "missed": []
+      },
+      {
+        "case_id": "XLANG-52-SAFE-php-crossfile-prepared",
+        "family": "hard",
+        "language": "php",
+        "is_safe": true,
+        "expected": 0,
+        "detected": 0,
+        "false_positives": 0,
+        "missed": []
+      }
+    ]
+  },
+  {
+    "name": "openai-codex-security",
+    "ran": false,
+    "recall": 0.0,
+    "detected": 0,
+    "expected": 0,
+    "false_positives": 0,
+    "cases": 0,
+    "by_family": {},
+    "by_language": {},
+    "note": "no captured output (requires credentials to run live)",
+    "per_case": []
+  }
+]
