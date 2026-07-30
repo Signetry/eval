@@ -35,6 +35,32 @@ still complete?** (utility). A defense that blocks everything scores ASR 0 with
 zero utility — useless. The number that matters is **ASR under defense at preserved
 utility**.
 
+## Detection benchmark (head-to-head)
+
+Beyond the adversarial suite, umbra-eval runs a **public detection benchmark** that
+scores Umbra's SAST engine against LLM security scanners on a shared, provenance-
+cited corpus — **52 cases across 7 languages** (Python, JavaScript, Go, Java, Ruby,
+PHP, C#) in six families (public/OWASP, academic/CWE, crafted, hard cross-file
+taint, multilang, cross-file-lang), with safe decoys for false-positive measurement.
+
+| Scanner | Recall | False positives | Cost |
+|---|:---:|:---:|---|
+| **umbra-core** (deterministic) | **100%** (42/42) | **0** | free · offline · reproducible |
+| claude-code-security-review (Claude Opus 4.8) | 90% (38/42) | 0 | paid per scan · non-deterministic |
+| @openai/codex-security | not run¹ | — | paid per scan |
+
+¹ Competitor scores replay a committed capture; a tool that wasn't run is shown as
+`not run`, never scored as zero.
+
+Umbra reaches this on the **deterministic, offline, free** layer — same result every
+run. The optional **Semgrep** layer (`--semgrep`) broadens coverage but can add
+false positives (its generic rules don't model every sanitizer); Umbra's
+deterministic engine is **0-FP** on the corpus, including sanitizer-aware cases
+where Semgrep is not — so the Semgrep layer is opt-in and non-gating. Detection
+parity is table stakes; the **governance** Umbra adds on top (earned authority,
+injection quarantine, independent verifier, signed receipts) is what the scanners
+don't attempt, and is measured by the adversarial suite below.
+
 ## Threat categories (mapped to the research)
 
 | Category | Threat | Basis |
@@ -47,13 +73,18 @@ utility**.
 ## Run it
 
 ```bash
-pip install umbra-eval           # pulls umbra-core>=0.3.0
+pip install umbra-eval           # pulls umbra-core>=0.5.0
 
 umbra-eval run                   # human summary (ASR / utility)
 umbra-eval run --markdown        # publishable report
 umbra-eval run --json            # machine-readable
 umbra-eval run --category ipi    # one threat category
 umbra-eval list                  # list scenarios
+
+umbra-eval corpus                # detection head-to-head (recall, FP, by-language)
+umbra-eval corpus --markdown     # publishable comparison table
+umbra-eval corpus --semgrep      # add the optional Semgrep layer (report-only)
+umbra-eval realrepo              # live scan of real vulnerable repos
 ```
 
 `umbra-eval run` exits non-zero if the defense did not hold on **every** adversarial

@@ -3,6 +3,20 @@
 Follows [Keep a Changelog](https://keepachangelog.com/) / [SemVer](https://semver.org/).
 Until `1.0.0` the public API may change between minor versions.
 
+## [0.2.1] — 2026-07-30
+
+### Fixed
+
+- Dependency floor raised to `umbra-core>=0.5.0` (was `0.3.0`) so a fresh install
+  always has the detection engine (`scan_repository`) the corpus benchmark needs.
+
+### Docs
+
+- README now documents the **detection head-to-head benchmark** (52 cases, 7
+  languages; umbra-core 100% recall / 0 false positives vs Claude Opus 4.8 90%),
+  the `corpus` / `realrepo` commands, and the honest note that any false positive
+  comes from the optional Semgrep layer, not the deterministic engine.
+
 ## [0.2.0] — 2026-07-30
 
 ### Added — head-to-head detection benchmark
