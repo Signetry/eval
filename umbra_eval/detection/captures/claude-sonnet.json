@@ -1,0 +1,163 @@
+{
+  "PUB-01-sqli-python": {
+    "findings": [
+      {
+        "file": "app.py",
+        "category": "sql_injection",
+        "severity": "HIGH"
+      }
+    ]
+  },
+  "PUB-02-cmdi-node": {
+    "findings": [
+      {
+        "file": "routes.js",
+        "category": "command_injection",
+        "severity": "HIGH"
+      }
+    ]
+  },
+  "PUB-03-pickle-python": {
+    "findings": [
+      {
+        "file": "session.py",
+        "category": "insecure_deserialization",
+        "severity": "HIGH"
+      }
+    ]
+  },
+  "PUB-04-xss-node": {
+    "findings": [
+      {
+        "file": "profile.js",
+        "category": "xss",
+        "severity": "HIGH"
+      }
+    ]
+  },
+  "PUB-05-path-traversal-python": {
+    "findings": [
+      {
+        "file": "download.py",
+        "category": "path_traversal",
+        "severity": "HIGH"
+      }
+    ]
+  },
+  "PUB-06-hardcoded-secret": {
+    "findings": [
+      {
+        "file": "settings.py",
+        "category": "hardcoded_secret",
+        "severity": "HIGH"
+      }
+    ]
+  },
+  "PUB-07-weak-hash-python": {
+    "findings": [
+      {
+        "file": "auth.py",
+        "category": "weak_crypto",
+        "severity": "HIGH"
+      }
+    ]
+  },
+  "ACAD-08-eval-python": {
+    "findings": [
+      {
+        "file": "calc.py",
+        "category": "code_injection",
+        "severity": "HIGH"
+      }
+    ]
+  },
+  "ACAD-09-yaml-load-python": {
+    "findings": [
+      {
+        "file": "config_loader.py",
+        "category": "insecure_deserialization",
+        "severity": "HIGH"
+      }
+    ]
+  },
+  "ACAD-10-tls-disabled-python": {
+    "findings": [
+      {
+        "file": "client.py",
+        "category": "tls_disabled",
+        "severity": "HIGH"
+      }
+    ]
+  },
+  "ACAD-11-insecure-random-node": {
+    "findings": [
+      {
+        "file": "reset.js",
+        "category": "insecure_randomness",
+        "severity": "HIGH"
+      }
+    ]
+  },
+  "ACAD-12-os-system-python": {
+    "findings": [
+      {
+        "file": "ops.py",
+        "category": "command_injection",
+        "severity": "HIGH"
+      }
+    ]
+  },
+  "ACAD-13-debug-python": {
+    "findings": [
+      {
+        "file": "wsgi.py",
+        "category": "debug_enabled",
+        "severity": "HIGH"
+      }
+    ]
+  },
+  "ACAD-14-sqli-via-format-python": {
+    "findings": [
+      {
+        "file": "users.py",
+        "category": "sql_injection",
+        "severity": "HIGH"
+      }
+    ]
+  },
+  "CRAFT-15-taint-through-helper-python": {
+    "findings": [
+      {
+        "file": "repo.py",
+        "category": "sql_injection",
+        "severity": "HIGH"
+      }
+    ]
+  },
+  "CRAFT-16-SAFE-parameterized-python": {
+    "findings": []
+  },
+  "CRAFT-17-SAFE-arglist-subprocess-python": {
+    "findings": []
+  },
+  "CRAFT-18-SAFE-escaped-xss-node": {
+    "findings": []
+  },
+  "CRAFT-19-SAFE-secure-random-node": {
+    "findings": []
+  },
+  "CRAFT-20-multi-vuln-python": {
+    "findings": [
+      {
+        "file": "admin.py",
+        "category": "command_injection",
+        "severity": "HIGH"
+      },
+      {
+        "file": "admin.py",
+        "category": "hardcoded_secret",
+        "severity": "HIGH"
+      }
+    ]
+  }
+}

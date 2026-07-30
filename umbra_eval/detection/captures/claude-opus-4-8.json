@@ -1,0 +1,408 @@
+{
+  "PUB-01-sqli-python": {
+    "findings": [
+      {
+        "file": "app.py",
+        "category": "sql_injection",
+        "severity": "HIGH"
+      }
+    ]
+  },
+  "PUB-02-cmdi-node": {
+    "findings": [
+      {
+        "file": "routes.js",
+        "category": "command_injection",
+        "severity": "HIGH"
+      }
+    ]
+  },
+  "PUB-03-pickle-python": {
+    "findings": [
+      {
+        "file": "session.py",
+        "category": "insecure_deserialization",
+        "severity": "HIGH"
+      }
+    ]
+  },
+  "PUB-04-xss-node": {
+    "findings": [
+      {
+        "file": "profile.js",
+        "category": "xss",
+        "severity": "HIGH"
+      }
+    ]
+  },
+  "PUB-05-path-traversal-python": {
+    "findings": [
+      {
+        "file": "download.py",
+        "category": "path_traversal",
+        "severity": "HIGH"
+      }
+    ]
+  },
+  "PUB-06-hardcoded-secret": {
+    "findings": [
+      {
+        "file": "settings.py",
+        "category": "hardcoded_secret",
+        "severity": "HIGH"
+      }
+    ]
+  },
+  "PUB-07-weak-hash-python": {
+    "findings": [
+      {
+        "file": "auth.py",
+        "category": "weak_crypto",
+        "severity": "HIGH"
+      }
+    ]
+  },
+  "ACAD-08-eval-python": {
+    "findings": [
+      {
+        "file": "calc.py",
+        "category": "code_injection",
+        "severity": "HIGH"
+      }
+    ]
+  },
+  "ACAD-09-yaml-load-python": {
+    "findings": [
+      {
+        "file": "config_loader.py",
+        "category": "insecure_deserialization",
+        "severity": "HIGH"
+      }
+    ]
+  },
+  "ACAD-10-tls-disabled-python": {
+    "findings": [
+      {
+        "file": "client.py",
+        "category": "tls_disabled",
+        "severity": "HIGH"
+      }
+    ]
+  },
+  "ACAD-11-insecure-random-node": {
+    "findings": [
+      {
+        "file": "reset.js",
+        "category": "insecure_randomness",
+        "severity": "HIGH"
+      }
+    ]
+  },
+  "ACAD-12-os-system-python": {
+    "findings": [
+      {
+        "file": "ops.py",
+        "category": "command_injection",
+        "severity": "HIGH"
+      }
+    ]
+  },
+  "ACAD-13-debug-python": {
+    "findings": [
+      {
+        "file": "wsgi.py",
+        "category": "debug_enabled",
+        "severity": "HIGH"
+      }
+    ]
+  },
+  "ACAD-14-sqli-via-format-python": {
+    "findings": [
+      {
+        "file": "users.py",
+        "category": "sql_injection",
+        "severity": "HIGH"
+      }
+    ]
+  },
+  "CRAFT-15-taint-through-helper-python": {
+    "findings": [
+      {
+        "file": "repo.py",
+        "category": "sql_injection",
+        "severity": "HIGH"
+      }
+    ]
+  },
+  "CRAFT-16-SAFE-parameterized-python": {
+    "findings": []
+  },
+  "CRAFT-17-SAFE-arglist-subprocess-python": {
+    "findings": []
+  },
+  "CRAFT-18-SAFE-escaped-xss-node": {
+    "findings": []
+  },
+  "CRAFT-19-SAFE-secure-random-node": {
+    "findings": []
+  },
+  "CRAFT-20-multi-vuln-python": {
+    "findings": [
+      {
+        "file": "admin.py",
+        "category": "command_injection",
+        "severity": "HIGH"
+      },
+      {
+        "file": "admin.py",
+        "category": "hardcoded_secret",
+        "severity": "HIGH"
+      }
+    ]
+  },
+  "HARD-21-crossfile-taint-python": {
+    "findings": [
+      {
+        "file": "db.py",
+        "category": "sql_injection",
+        "severity": "HIGH"
+      }
+    ]
+  },
+  "HARD-22-string-indirection-python": {
+    "findings": [
+      {
+        "file": "runner.py",
+        "category": "command_injection",
+        "severity": "HIGH"
+      }
+    ]
+  },
+  "HARD-23-django-extra-sqli": {
+    "findings": [
+      {
+        "file": "views.py",
+        "category": "sql_injection",
+        "severity": "HIGH"
+      }
+    ]
+  },
+  "HARD-24-ssrf-python": {
+    "findings": []
+  },
+  "HARD-25-jwt-none-python": {
+    "findings": [
+      {
+        "file": "token.py",
+        "category": "weak_crypto",
+        "severity": "HIGH"
+      }
+    ]
+  },
+  "HARD-26-ssti-python": {
+    "findings": [
+      {
+        "file": "page.py",
+        "category": "code_injection",
+        "severity": "HIGH"
+      },
+      {
+        "file": "page.py",
+        "category": "xss",
+        "severity": "HIGH"
+      }
+    ]
+  },
+  "HARD-27-nosql-injection-node": {
+    "findings": [
+      {
+        "file": "login.js",
+        "category": "sql_injection",
+        "severity": "HIGH"
+      }
+    ]
+  },
+  "HARD-28-SAFE-fake-sanitizer-python": {
+    "findings": []
+  },
+  "HARD-29-SAFE-constant-not-secret-python": {
+    "findings": []
+  },
+  "HARD-30-multi-file-mixed": {
+    "findings": [
+      {
+        "file": "handlers.py",
+        "category": "command_injection",
+        "severity": "HIGH"
+      }
+    ]
+  },
+  "LANG-31-go-sqli": {
+    "findings": [
+      {
+        "file": "main.go",
+        "category": "sql_injection",
+        "severity": "HIGH"
+      }
+    ]
+  },
+  "LANG-32-go-tls": {
+    "findings": [
+      {
+        "file": "client.go",
+        "category": "tls_disabled",
+        "severity": "HIGH"
+      }
+    ]
+  },
+  "LANG-33-java-sqli": {
+    "findings": [
+      {
+        "file": "Dao.java",
+        "category": "sql_injection",
+        "severity": "HIGH"
+      }
+    ]
+  },
+  "LANG-34-java-deser": {
+    "findings": [
+      {
+        "file": "Loader.java",
+        "category": "insecure_deserialization",
+        "severity": "HIGH"
+      }
+    ]
+  },
+  "LANG-35-ruby-cmdi": {
+    "findings": [
+      {
+        "file": "ops.rb",
+        "category": "command_injection",
+        "severity": "HIGH"
+      }
+    ]
+  },
+  "LANG-36-php-sqli": {
+    "findings": [
+      {
+        "file": "user.php",
+        "category": "sql_injection",
+        "severity": "HIGH"
+      }
+    ]
+  },
+  "LANG-37-php-object-injection": {
+    "findings": [
+      {
+        "file": "session.php",
+        "category": "insecure_deserialization",
+        "severity": "HIGH"
+      }
+    ]
+  },
+  "LANG-38-csharp-sqli": {
+    "findings": [
+      {
+        "file": "Repo.cs",
+        "category": "sql_injection",
+        "severity": "HIGH"
+      }
+    ]
+  },
+  "LANG-39-SAFE-go-parameterized": {
+    "findings": []
+  },
+  "LANG-40-SAFE-php-prepared": {
+    "findings": []
+  },
+  "LANG-41-go-multivar-sqli": {
+    "findings": [
+      {
+        "file": "store.go",
+        "category": "sql_injection",
+        "severity": "HIGH"
+      }
+    ]
+  },
+  "LANG-42-java-multivar-sqli": {
+    "findings": [
+      {
+        "file": "UserDao.java",
+        "category": "sql_injection",
+        "severity": "HIGH"
+      }
+    ]
+  },
+  "LANG-43-php-multivar-cmdi": {
+    "findings": [
+      {
+        "file": "run.php",
+        "category": "command_injection",
+        "severity": "HIGH"
+      }
+    ]
+  },
+  "LANG-44-csharp-multivar-sqli": {
+    "findings": [
+      {
+        "file": "Repo2.cs",
+        "category": "sql_injection",
+        "severity": "HIGH"
+      }
+    ]
+  },
+  "LANG-45-SAFE-java-parameterized": {
+    "findings": []
+  },
+  "XLANG-46-go-crossfile-sqli": {
+    "findings": [
+      {
+        "file": "store.go",
+        "category": "sql_injection",
+        "severity": "HIGH"
+      }
+    ]
+  },
+  "XLANG-47-java-crossfile-sqli": {
+    "findings": [
+      {
+        "file": "Dao.java",
+        "category": "sql_injection",
+        "severity": "HIGH"
+      }
+    ]
+  },
+  "XLANG-48-php-crossfile-sqli": {
+    "findings": [
+      {
+        "file": "db.php",
+        "category": "sql_injection",
+        "severity": "HIGH"
+      }
+    ]
+  },
+  "XLANG-49-SAFE-go-crossfile-constant": {
+    "findings": []
+  },
+  "XLANG-50-ruby-crossfile-sqli": {
+    "findings": [
+      {
+        "file": "dao.rb",
+        "category": "sql_injection",
+        "severity": "HIGH"
+      }
+    ]
+  },
+  "XLANG-51-csharp-crossfile-sqli": {
+    "findings": [
+      {
+        "file": "Dao.cs",
+        "category": "sql_injection",
+        "severity": "HIGH"
+      }
+    ]
+  },
+  "XLANG-52-SAFE-php-crossfile-prepared": {
+    "findings": []
+  }
+}

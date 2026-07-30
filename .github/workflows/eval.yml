@@ -31,6 +31,16 @@ jobs:
         run: |
           umbra-eval run --markdown > eval-report.md || true
           umbra-eval run --json > eval-report.json || true
+      - name: Detection head-to-head (20/40/45-case corpus vs committed Opus 4.8 capture)
+        if: always()
+        run: |
+          # Regenerates the head-to-head table. The competitor baseline is the
+          # committed capture in umbra_eval/detection/captures/. Umbra runs live
+          # (deterministic, offline). --min-recall/--max-fp gate a regression:
+          # if Umbra's recall drops or it raises a false positive, CI fails.
+          umbra-eval corpus --markdown > detection-headtohead.md
+          umbra-eval corpus --json > detection-headtohead.json
+          umbra-eval corpus --min-recall 1.0 --max-fp 0
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -38,4 +48,6 @@ jobs:
           path: |
             eval-report.md
             eval-report.json
+            detection-headtohead.md
+            detection-headtohead.json
           if-no-files-found: ignore
