@@ -52,6 +52,21 @@ def render_markdown(scores: list[CorpusScore]) -> str:
     for s in scores:
         note = s.note or ("ran" if s.ran else "not run")
         lines.append(f"- **{s.name}**: {note}")
+        # Be explicit about the source of any false positive: the deterministic floor
+        # is 0-FP on the corpus; FPs appear only when the optional Semgrep layer is
+        # enabled (its community rules don't model every sanitizer). This is why the
+        # Semgrep layer is opt-in and non-gating.
+        semgrep_fp = (
+            s.ran and s.name == "umbra-core" and s.false_positive_total > 0
+            and "semgrep" in (s.note or "").lower()
+        )
+        if semgrep_fp:
+            lines.append(
+                f"  - the {s.false_positive_total} false positive(s) come from the optional "
+                "**Semgrep** layer, not the deterministic engine (which is 0-FP on this "
+                "corpus). Semgrep's generic rules can miss a sanitizer (e.g. an escaped-"
+                "output helper). Run without `--semgrep` for the zero-FP deterministic result."
+            )
     lines += [
         "",
         "---",

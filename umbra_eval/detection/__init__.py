@@ -36,9 +36,10 @@ def run_corpus_head_to_head(
     """Run the 20-case corpus for Umbra + (optionally captured) competitor outputs."""
     if claude_capture is None:
         claude_capture = _default_claude_capture()
+    umbra_note = "deterministic + semgrep layer" if use_semgrep else "deterministic, offline"
     scores: list[CorpusScore] = [
         run_corpus_benchmark("umbra-core", umbra_corpus_adapter(use_semgrep=use_semgrep),
-                             note="deterministic, offline"),
+                             note=umbra_note),
     ]
     for name, cap in (("claude-code-security-review", claude_capture),
                       ("openai-codex-security", codex_capture)):
