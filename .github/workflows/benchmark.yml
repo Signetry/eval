@@ -21,6 +21,14 @@ jobs:
           python-version: "3.12"
       - name: Install
         run: pip install -e ".[dev]"
+      - name: Require the umbra-core detection engine
+        run: |
+          # The release benchmark must run against a umbra-core that has the SAST
+          # engine. Fail loudly if it is missing (a real release misconfiguration).
+          python -c "from umbra_core import scan_repository" || {
+            echo "::error::Installed umbra-core lacks scan_repository; pin a umbra-core with the detection engine."
+            exit 1
+          }
       - name: Regenerate the head-to-head table
         run: |
           mkdir -p docs
