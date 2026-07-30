@@ -3,6 +3,8 @@ from __future__ import annotations
 
 import json
 
+import pytest
+
 from umbra_eval.detection import (
     in_scope_ground_truth,
     render_markdown,
@@ -11,7 +13,20 @@ from umbra_eval.detection import (
 from umbra_eval.detection.adapters import captured_json_adapter
 from umbra_eval.detection.benchmark import run_benchmark
 
+# Engine-dependent tests skip when the installed umbra-core lacks scan_repository
+# (e.g. CI installing an older umbra-core from PyPI before the engine is released).
+try:
+    from umbra_core import scan_repository as _scan_repository  # noqa: F401
+    _HAS_ENGINE = True
+except Exception:
+    _HAS_ENGINE = False
 
+requires_engine = pytest.mark.skipif(
+    not _HAS_ENGINE, reason="umbra-core detection engine not available",
+)
+
+
+@requires_engine
 def test_umbra_achieves_full_recall_zero_fp():
     scores = run_detection_benchmark()
     umbra = next(s for s in scores if s.name == "umbra-core")
@@ -20,6 +35,7 @@ def test_umbra_achieves_full_recall_zero_fp():
     assert umbra.false_positives == 0
 
 
+@requires_engine
 def test_competitors_not_run_without_capture():
     scores = run_detection_benchmark()
     claude = next(s for s in scores if s.name == "claude-code-security-review")
@@ -52,6 +68,7 @@ def test_false_positive_counted_when_finding_in_safe_file(tmp_path):
     assert scores[0].false_positives == 1
 
 
+@requires_engine
 def test_markdown_renders_table():
     scores = run_detection_benchmark()
     md = render_markdown(scores)
@@ -65,6 +82,7 @@ def test_ground_truth_excludes_open_redirect_from_in_scope():
     assert len(ids) == 13
 
 
+@requires_engine
 def test_semgrep_layer_optional_does_not_break(tmp_path):
     # use_semgrep=True must not error even if semgrep is absent.
     scores = run_detection_benchmark(use_semgrep=True)
