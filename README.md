@@ -8,6 +8,9 @@ Measures **attack success rate (ASR)** and **utility-under-defense** for coding-
 threats — governed by the same [`umbra-core`](https://github.com/bkd-dotcom/umbra-core)
 pipeline production uses.
 
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
 </div>
 
 ---
@@ -115,6 +118,15 @@ print(report.overall())          # asr_ungoverned, asr_governed, utility_governe
   registered in [`umbra_eval/scenarios`](umbra_eval/scenarios).
 - Add a scenario: model the attack, run it ungoverned + governed via the harness,
   and return a `ScenarioResult`.
+
+## Contributing
+
+PRs welcome — the best contribution is **a new test case**. Add a detection
+**corpus case** (`umbra_eval/detection/corpus/`, with a cited `provenance`; SAFE
+decoys must stay 0 false positives) or an **adversarial scenario**
+(`umbra_eval/scenarios/`). See [CONTRIBUTING.md](CONTRIBUTING.md) and
+[CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md). Every case ships with a test; CI gates the
+benchmark on 100% recall / 0 FP.
 
 Part of the Umbra platform — see the [umbrella overview](https://github.com/bkd-dotcom/umbra-umbrella).
 
