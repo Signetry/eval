@@ -1,6 +1,6 @@
 [project]
 name = "umbra-eval"
-version = "0.1.0"
+version = "0.2.0"
 description = "The public adversarial evaluation suite for Umbra: measures attack success rate (ASR) and utility-under-defense for coding-agent prompt injection, skill/MCP poisoning, and memory-injection threats, governed by umbra-core."
 readme = "README.md"
 requires-python = ">=3.11"
