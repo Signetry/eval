@@ -1,6 +1,6 @@
 [project]
 name = "umbra-eval"
-version = "0.2.0"
+version = "0.2.1"
 description = "The public adversarial evaluation suite for Umbra: measures attack success rate (ASR) and utility-under-defense for coding-agent prompt injection, skill/MCP poisoning, and memory-injection threats, governed by umbra-core."
 readme = "README.md"
 requires-python = ">=3.11"
@@ -22,7 +22,7 @@ classifiers = [
     "Topic :: Software Development :: Quality Assurance",
 ]
 dependencies = [
-    "umbra-core>=0.3.0",
+    "umbra-core>=0.5.0",
 ]
 
 [project.urls]
