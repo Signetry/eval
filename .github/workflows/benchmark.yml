@@ -40,7 +40,7 @@ jobs:
           umbra-eval corpus --json > docs/BENCHMARK.json
       - name: Gate on parity (Umbra must keep 100% recall, 0 false positives)
         run: umbra-eval corpus --min-recall 1.0 --max-fp 0
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: detection-benchmark
           path: |
