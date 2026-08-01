@@ -2,6 +2,10 @@
 
 # umbra-eval
 
+> **Copyright (c) 2026 Binay Dalai. All rights reserved.**
+> This repository is strictly for viewing and contributing to the original project. You may not use, copy, modify, distribute, or commercialize this code for your own personal or commercial projects without explicit written permission. Only the original author retains the right to use and monetize this project.
+
+
 **The public adversarial evaluation suite for [Umbra](https://github.com/bkd-dotcom/umbra-umbrella).**
 
 Measures **attack success rate (ASR)** and **utility-under-defense** for coding-agent
@@ -9,7 +13,6 @@ threats — governed by the same [`umbra-core`](https://github.com/bkd-dotcom/um
 pipeline production uses.
 
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 </div>
 
@@ -132,4 +135,4 @@ Part of the Umbra platform — see the [umbrella overview](https://github.com/bk
 
 ## License
 
-[MIT](LICENSE) © 2026 Binay Dalai.
+**Copyright (c) 2026 Binay Dalai. All rights reserved.** This code is not open source. You may not use, copy, modify, distribute, or commercialize it for your own personal or commercial purposes without explicit written permission from the author, who alone retains the right to use and monetize this project. See [CONTRIBUTING.md](CONTRIBUTING.md).
