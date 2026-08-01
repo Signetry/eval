@@ -12,7 +12,8 @@ Measures **attack success rate (ASR)** and **utility-under-defense** for coding-
 threats — governed by the same [`umbra-core`](https://github.com/bkd-dotcom/umbra-core)
 pipeline production uses.
 
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+[![Source-available](https://img.shields.io/badge/source-available-informational.svg)](CLA.md)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome%20(CLA)-brightgreen.svg)](https://github.com/bkd-dotcom/umbra-umbrella/issues/10)
 
 </div>
 
@@ -124,7 +125,7 @@ print(report.overall())          # asr_ungoverned, asr_governed, utility_governe
 
 ## Contributing
 
-PRs welcome — the best contribution is **a new test case**. Add a detection
+**Source-available, PRs welcome** (not open source; All Rights Reserved). Contribute under the [CLA](CLA.md) — you're **credited** ([CONTRIBUTORS.md](CONTRIBUTORS.md)) but gain no ownership or right to use/sell it. Start at the [good-first-issues board](https://github.com/bkd-dotcom/umbra-umbrella/issues/10). The best contribution is **a new test case**. Add a detection
 **corpus case** (`umbra_eval/detection/corpus/`, with a cited `provenance`; SAFE
 decoys must stay 0 false positives) or an **adversarial scenario**
 (`umbra_eval/scenarios/`). See [CONTRIBUTING.md](CONTRIBUTING.md) and
