@@ -1,6 +1,6 @@
 [project]
 name = "umbra-eval"
-version = "0.2.1"
+version = "0.2.2"
 description = "The public adversarial evaluation suite for Umbra: measures attack success rate (ASR) and utility-under-defense for coding-agent prompt injection, skill/MCP poisoning, and memory-injection threats, governed by umbra-core."
 readme = "README.md"
 requires-python = ">=3.11"
@@ -21,7 +21,7 @@ classifiers = [
     "Topic :: Software Development :: Quality Assurance",
 ]
 dependencies = [
-    "umbra-core>=0.5.0",
+    "umbra-core @ git+https://github.com/bkd-dotcom/umbra-core@v0.5.3",
 ]
 
 [project.urls]
@@ -42,6 +42,10 @@ dev = [
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[tool.hatch.metadata]
+# umbra-core is a direct git reference (All Rights Reserved; not on PyPI).
+allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
 packages = ["umbra_eval"]
