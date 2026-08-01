@@ -79,7 +79,7 @@ don't attempt, and is measured by the adversarial suite below.
 ## Run it
 
 ```bash
-pip install umbra-eval           # pulls umbra-core>=0.5.0
+pip install -e .                 # pulls umbra-core from its source repo (not on PyPI)
 
 umbra-eval run                   # human summary (ASR / utility)
 umbra-eval run --markdown        # publishable report
