@@ -7,7 +7,7 @@ Until `1.0.0` the public API may change between minor versions.
 
 ### Changed
 
-- Install `umbra-core` from its **source repository** (`git+https://github.com/bkd-dotcom/umbra-core@v0.5.3`)
+- Install `umbra-core` from its **source repository** (`git+https://github.com/bkd-dotcom/umbra-core@v0.5.4`)
   instead of PyPI — umbra-core is All Rights Reserved and no longer distributed on
   PyPI. Enables `tool.hatch.metadata.allow-direct-references`.
 

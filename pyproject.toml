@@ -21,7 +21,7 @@ classifiers = [
     "Topic :: Software Development :: Quality Assurance",
 ]
 dependencies = [
-    "umbra-core @ git+https://github.com/bkd-dotcom/umbra-core@v0.5.3",
+    "umbra-core @ git+https://github.com/bkd-dotcom/umbra-core@v0.5.4",
 ]
 
 [project.urls]
