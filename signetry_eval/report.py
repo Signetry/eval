@@ -1,10 +1,10 @@
 """Aggregate scenario results into honest metrics + curves.
 
-The headline numbers Umbra publishes:
+The headline numbers Signetry publishes:
 
 - **ASR (ungoverned)** — attack success rate with no checkpoint (the baseline the
   agent ecosystem lives with today).
-- **ASR (governed)** — attack success rate through umbra-core. The claim is a
+- **ASR (governed)** — attack success rate through signetry-core. The claim is a
   *large reduction*, never zero: novel phrasings can evade a pattern detector, so
   the honest framing is **bounded + quarantined + dual-verified + receipted**.
 - **Utility (governed)** — fraction of benign tasks that still complete under
@@ -111,10 +111,10 @@ class Report:
 def render_markdown(report: Report) -> str:
     o = report.overall()
     lines = [
-        "# Umbra adversarial evaluation",
+        "# Signetry adversarial evaluation",
         "",
-        "> ASR = attack success rate. The governed column is Umbra's admission pipeline "
-        "(umbra-core). This is **not** a claim that injection is solved — it is "
+        "> ASR = attack success rate. The governed column is Signetry's admission pipeline "
+        "(signetry-core). This is **not** a claim that injection is solved — it is "
         "*bounded + quarantined + dual-verified + receipted*.",
         "",
         "## Headline",

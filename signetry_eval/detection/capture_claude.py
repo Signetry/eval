@@ -5,8 +5,8 @@ prompt, parses the JSON findings, and writes a per-case capture:
     {"CASE-ID": {"findings": [{"file","category"}, ...]}, ...}
 
 This is a one-time, credentialed capture; the resulting JSON is replayed offline by
-`umbra-eval corpus --claude-capture <file>`. Not part of the test suite (needs the
-CLI + network). Run:  python -m umbra_eval.detection.capture_claude out.json
+`signetry-eval corpus --claude-capture <file>`. Not part of the test suite (needs the
+CLI + network). Run:  python -m signetry_eval.detection.capture_claude out.json
 """
 # ruff: noqa: E501  (this module embeds a verbatim audit prompt; long lines are intentional)
 from __future__ import annotations

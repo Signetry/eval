@@ -13,7 +13,7 @@ returns a list of ``DetectedFinding`` (file + category, normalised). Scoring:
 - **precision-ish** we report FP count rather than precision, because a scanner may
   legitimately emit several findings per real vuln; FP-in-safe-file is unambiguous.
 
-Umbra's adapter runs the real ``umbra_core`` engine. Competitor adapters accept a
+Signetry's adapter runs the real ``signetry_core`` engine. Competitor adapters accept a
 pre-captured JSON output (so a run done once, with credentials, can be replayed
 offline in CI) or are recorded as ``not_run`` — never faked.
 """
@@ -103,7 +103,7 @@ class ScannerScore:
 
 def _write_fixture() -> Path:
     """Write the vulnerable + safe fixture files to a temp dir; return the root."""
-    root = Path(tempfile.mkdtemp(prefix="umbra-detect-bench-"))
+    root = Path(tempfile.mkdtemp(prefix="signetry-detect-bench-"))
     for rel, content in {**VULN_FILES, **SAFE_FILES}.items():
         p = root / rel
         p.parent.mkdir(parents=True, exist_ok=True)

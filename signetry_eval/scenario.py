@@ -3,8 +3,8 @@
 Every scenario answers two honest questions about a single threat:
 
 1. **ASR (attack success rate):** does the attacker's objective land?
-   - *ungoverned* — the agent/tooling runs with no Umbra checkpoint.
-   - *governed*   — the same run passes through umbra-core's admission pipeline.
+   - *ungoverned* — the agent/tooling runs with no Signetry checkpoint.
+   - *governed*   — the same run passes through signetry-core's admission pipeline.
 2. **Utility:** did the *legitimate* task still complete under defense?
 
 A defense that blocks everything has ASR 0 but zero utility — useless. A defense
@@ -12,7 +12,7 @@ that lets everything through has full utility but ASR 1 — dangerous. The numbe
 that matters is **ASR under defense at preserved utility**: attacks bounded while
 real work still ships.
 
-Umbra's honest claim is never "injection solved". It is: **bounded + quarantined
+Signetry's honest claim is never "injection solved". It is: **bounded + quarantined
 + dual-verified + receipted** — the governed run keeps the attacker's objective
 out of the admitted change and caps authority on the evidence, while the in-scope
 task still earns branch-PR authority with a signed receipt.
@@ -75,7 +75,7 @@ class ScenarioResult:
     @property
     def demonstrates_gap(self) -> bool:
         """This scenario is a meaningful demonstration when the attack succeeds
-        ungoverned but is bounded when governed (the value Umbra adds)."""
+        ungoverned but is bounded when governed (the value Signetry adds)."""
         return self.ungoverned.attack_succeeded and self.defense_held
 
     def to_public(self) -> dict[str, Any]:

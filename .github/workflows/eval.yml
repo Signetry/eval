@@ -18,38 +18,38 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Install
         run: |
-          # umbra-core is installed from its source repo (a git+https dependency in
+          # signetry-core is installed from its source repo (a git+https dependency in
           # pyproject.toml); it is All Rights Reserved and not on PyPI.
           pip install -e ".[dev]"
       - name: Ruff
-        run: ruff check umbra_eval/ tests/
+        run: ruff check signetry_eval/ tests/
       - name: Tests
         run: pytest -q
       - name: Publish the adversarial report (artifact)
         if: always()
         run: |
-          umbra-eval run --markdown > eval-report.md || true
-          umbra-eval run --json > eval-report.json || true
+          signetry-eval run --markdown > eval-report.md || true
+          signetry-eval run --json > eval-report.json || true
       - name: Detection head-to-head (corpus vs committed Opus 4.8 capture)
         if: always()
         run: |
           # Regenerates the head-to-head table. The competitor baseline is the
-          # committed capture in umbra_eval/detection/captures/. Umbra runs live
+          # committed capture in signetry_eval/detection/captures/. Signetry runs live
           # (deterministic, offline). The --min-recall/--max-fp gate activates only
-          # when the installed umbra-core has the detection engine (scan_repository);
-          # against an older PyPI umbra-core it degrades to a skip so this repo's CI
+          # when the installed signetry-core has the detection engine (scan_repository);
+          # against an older PyPI signetry-core it degrades to a skip so this repo's CI
           # is green until the engine ships, then enforces 100% recall / 0 FP.
-          if python -c "from umbra_core import scan_repository" 2>/dev/null; then
-            umbra-eval corpus --markdown > detection-headtohead.md
-            umbra-eval corpus --json > detection-headtohead.json
-            umbra-eval corpus --min-recall 1.0 --max-fp 0
+          if python -c "from signetry_core import scan_repository" 2>/dev/null; then
+            signetry-eval corpus --markdown > detection-headtohead.md
+            signetry-eval corpus --json > detection-headtohead.json
+            signetry-eval corpus --min-recall 1.0 --max-fp 0
           else
-            echo "umbra-core detection engine not available in the installed version; skipping head-to-head gate." | tee detection-headtohead.md
+            echo "signetry-core detection engine not available in the installed version; skipping head-to-head gate." | tee detection-headtohead.md
           fi
       - uses: actions/upload-artifact@v7
         if: always()
         with:
-          name: umbra-eval-report-${{ matrix.python-version }}
+          name: signetry-eval-report-${{ matrix.python-version }}
           path: |
             eval-report.md
             eval-report.json
@@ -76,10 +76,10 @@ jobs:
           pip install semgrep || echo "::warning::semgrep install failed; layer will be unavailable."
       - name: Corpus with Semgrep layer (report-only)
         run: |
-          if python -c "from umbra_core import scan_repository" 2>/dev/null; then
+          if python -c "from signetry_core import scan_repository" 2>/dev/null; then
             # --semgrep enables the optional layer; no --min-recall/--max-fp gate here.
-            umbra-eval corpus --semgrep --markdown > detection-semgrep.md || true
-            umbra-eval corpus --semgrep --json > detection-semgrep.json || true
+            signetry-eval corpus --semgrep --markdown > detection-semgrep.md || true
+            signetry-eval corpus --semgrep --json > detection-semgrep.json || true
             echo "=== corpus with Semgrep layer ==="; cat detection-semgrep.md || true
           else
             echo "detection engine unavailable; skipping." | tee detection-semgrep.md
@@ -87,7 +87,7 @@ jobs:
       - uses: actions/upload-artifact@v7
         if: always()
         with:
-          name: umbra-eval-semgrep-coverage
+          name: signetry-eval-semgrep-coverage
           path: |
             detection-semgrep.md
             detection-semgrep.json

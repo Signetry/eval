@@ -56,7 +56,7 @@ jobs:
           script: |
             const fs = require('fs'); const path = require('path');
             const out = process.env.OUT || '';
-            let body = 'Umbra Reviewer: no review was produced.';
+            let body = 'Signetry Reviewer: no review was produced.';
             try { body = fs.readFileSync(path.join(out, 'comment.md'), 'utf8'); } catch (e) {}
             const marker = '<!-- umbra-reviewer -->';
             body = marker + '\n' + body;

@@ -1,6 +1,6 @@
 """XFILE_LANG family: cross-file taint in non-Python languages.
 
-Proves Umbra's interprocedural analysis now spans files for Go, Java and PHP (not
+Proves Signetry's interprocedural analysis now spans files for Go, Java and PHP (not
 just Python): a user source in one file flows through a function call into a sink in
 another file. Includes a SAFE cross-file decoy (constant argument) so the
 false-positive measurement covers the cross-file path too.

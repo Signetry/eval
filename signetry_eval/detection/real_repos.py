@@ -3,8 +3,8 @@
 Unlike the snippet corpus (self-contained, offline, CI-safe), these point at real
 public GitHub repositories at PINNED commits, each a well-known deliberately-
 vulnerable teaching app or a project with documented vulnerable patterns. Running
-this scans the actual repo (network + clone) and reports what Umbra finds — the
-same thing a user gets from ``umbra scan <url>``.
+this scans the actual repo (network + clone) and reports what Signetry finds — the
+same thing a user gets from ``signetry scan <url>``.
 
 These are intentionally *not* asserted for exact recall in unit tests (real repos
 drift, and ground truth for a whole app is fuzzy); instead the harness reports the

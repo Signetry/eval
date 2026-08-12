@@ -1,8 +1,8 @@
-"""umbra-eval — the public adversarial evaluation suite for Umbra.
+"""signetry-eval — the public adversarial evaluation suite for Signetry.
 
 Measures attack success rate (ASR) and utility-under-defense for coding-agent
 threats — indirect prompt injection, skill/MCP poisoning, and memory injection —
-running the same governance production uses (umbra-core). Deterministic, offline,
+running the same governance production uses (signetry-core). Deterministic, offline,
 reproducible in CI.
 """
 from __future__ import annotations

@@ -1,15 +1,15 @@
-"""Head-to-head detection benchmark: score Umbra and competitor scanners against a
+"""Head-to-head detection benchmark: score Signetry and competitor scanners against a
 shared ground-truth fixture (recall + false positives). Complements the ASR/utility
 suite by measuring the vuln-detection axis the scanner tools are built for."""
 from __future__ import annotations
 
-from .adapters import captured_json_adapter, umbra_adapter
+from .adapters import captured_json_adapter, signetry_adapter
 from .benchmark import ScannerScore, run_benchmark, score
 from .corpus import ALL_CASES, safe_cases, total_expected_findings, vulnerable_cases
 from .corpus_adapters import (
     captured_corpus_adapter,
     load_capture,
-    umbra_corpus_adapter,
+    signetry_corpus_adapter,
 )
 from .corpus_benchmark import CorpusScore, not_run, run_corpus_benchmark
 from .corpus_report import render_markdown as render_corpus_markdown
@@ -20,7 +20,7 @@ from .report import render_markdown, render_text
 
 def _default_claude_capture() -> str | None:
     """The committed Opus 4.8 capture, if present — used as the default competitor
-    baseline so `umbra-eval corpus` shows the head-to-head with no arguments."""
+    baseline so `signetry-eval corpus` shows the head-to-head with no arguments."""
     from pathlib import Path
 
     p = Path(__file__).parent / "captures" / "claude-opus-4-8.json"
@@ -33,13 +33,13 @@ def run_corpus_head_to_head(
     claude_capture: str | None = None,
     codex_capture: str | None = None,
 ) -> list[CorpusScore]:
-    """Run the 20-case corpus for Umbra + (optionally captured) competitor outputs."""
+    """Run the 20-case corpus for Signetry + (optionally captured) competitor outputs."""
     if claude_capture is None:
         claude_capture = _default_claude_capture()
-    umbra_note = "deterministic + semgrep layer" if use_semgrep else "deterministic, offline"
+    signetry_note = "deterministic + semgrep layer" if use_semgrep else "deterministic, offline"
     scores: list[CorpusScore] = [
-        run_corpus_benchmark("umbra-core", umbra_corpus_adapter(use_semgrep=use_semgrep),
-                             note=umbra_note),
+        run_corpus_benchmark("signetry-core", signetry_corpus_adapter(use_semgrep=use_semgrep),
+                             note=signetry_note),
     ]
     for name, cap in (("claude-code-security-review", claude_capture),
                       ("openai-codex-security", codex_capture)):
@@ -61,9 +61,9 @@ def run_detection_benchmark(
     claude_capture: str | None = None,
     codex_capture: str | None = None,
 ) -> list[ScannerScore]:
-    """Run the benchmark across Umbra + (optionally captured) competitor outputs."""
+    """Run the benchmark across Signetry + (optionally captured) competitor outputs."""
     adapters = [
-        umbra_adapter(use_semgrep=use_semgrep),
+        signetry_adapter(use_semgrep=use_semgrep),
         captured_json_adapter("claude-code-security-review", claude_capture),
         captured_json_adapter("openai-codex-security", codex_capture),
     ]
@@ -91,8 +91,8 @@ __all__ = [
     "run_detection_benchmark",
     "safe_cases",
     "score",
+    "signetry_adapter",
+    "signetry_corpus_adapter",
     "total_expected_findings",
-    "umbra_adapter",
-    "umbra_corpus_adapter",
     "vulnerable_cases",
 ]

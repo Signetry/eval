@@ -2,7 +2,7 @@
 
 The attack: poison an agent's *memory* so a later, unrelated request inherits a
 stale authorization — a decision made for one change is replayed to bless a
-different one. Umbra binds each admission to the exact run: the receipt carries the
+different one. Signetry binds each admission to the exact run: the receipt carries the
 base commit, the diff hash, and (v2) the plan capability set's mission digest +
 plan hash. A receipt therefore authorizes *that* change on *that* base — replaying
 it against a different change is detectable because the bound hashes no longer match.
@@ -16,7 +16,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from umbra_core import build_receipt, run_admission
+from signetry_core import build_receipt, run_admission
 
 from ..harness import ScriptedAgent, cleanup, make_repo
 from ..scenario import CATEGORY_MINJA, Outcome, ScenarioResult
@@ -57,7 +57,7 @@ class StaleAuthorizationReplayScenario:
 
     def run(self) -> ScenarioResult:
         files = {
-            ".umbra/admission.yaml": _CONTRACT,
+            ".signetry/admission.yaml": _CONTRACT,
             "package.json": '{"dependencies": {"left-pad": "1.0.0"}}\n',
         }
         # 1. A legitimate run earns a receipt bound to THIS change on THIS base.
@@ -92,7 +92,7 @@ class StaleAuthorizationReplayScenario:
             fresh_base = fresh.base_commit
             fresh_diff_hash = None
             # Recompute the fresh change's diff hash the same way the receipt would.
-            from umbra_core.pipeline.receipt import _sha256
+            from signetry_core.pipeline.receipt import _sha256
             fresh_diff_hash = _sha256(fresh.diff) if fresh.diff else None
             fresh_plan_hash = (fresh.plan_capability_set or {}).get("plan_hash")
         finally:

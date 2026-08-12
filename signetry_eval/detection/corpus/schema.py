@@ -1,6 +1,6 @@
 """The 20-case public detection corpus — schema + case definitions.
 
-Purpose: a credible, independently-traceable benchmark so Umbra's detection can be
+Purpose: a credible, independently-traceable benchmark so Signetry's detection can be
 scored head-to-head against LLM scanners (claude-code-security-review /
 @openai/codex-security) on cases a skeptic can verify. Every case records:
 
@@ -38,7 +38,7 @@ class ExpectedFinding:
     """One ground-truth vulnerability expected in a case file."""
 
     cwe: str
-    category: str  # umbra-normalised category (see benchmark._CATEGORY_ALIASES)
+    category: str  # signetry-normalised category (see benchmark._CATEGORY_ALIASES)
     file: str
 
 

@@ -46,7 +46,7 @@ class BenignDependencyFixScenario:
 
     def run(self) -> ScenarioResult:
         files = {
-            ".umbra/admission.yaml": _CONTRACT,
+            ".signetry/admission.yaml": _CONTRACT,
             "package.json": '{"dependencies": {"left-pad": "1.0.0"}}\n',
             "README.md": "# Project\nA normal, clean readme.\n",
         }

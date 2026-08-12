@@ -5,31 +5,31 @@ import json
 
 import pytest
 
-from umbra_eval.detection import (
+from signetry_eval.detection import (
     in_scope_ground_truth,
     render_markdown,
     run_detection_benchmark,
 )
-from umbra_eval.detection.adapters import captured_json_adapter
-from umbra_eval.detection.benchmark import run_benchmark
+from signetry_eval.detection.adapters import captured_json_adapter
+from signetry_eval.detection.benchmark import run_benchmark
 
-# Engine-dependent tests skip when the installed umbra-core lacks scan_repository
-# (e.g. CI installing an older umbra-core from PyPI before the engine is released).
+# Engine-dependent tests skip when the installed signetry-core lacks scan_repository
+# (e.g. CI installing an older signetry-core from PyPI before the engine is released).
 try:
-    from umbra_core import scan_repository as _scan_repository  # noqa: F401
+    from signetry_core import scan_repository as _scan_repository  # noqa: F401
     _HAS_ENGINE = True
 except Exception:
     _HAS_ENGINE = False
 
 requires_engine = pytest.mark.skipif(
-    not _HAS_ENGINE, reason="umbra-core detection engine not available",
+    not _HAS_ENGINE, reason="signetry-core detection engine not available",
 )
 
 
 @requires_engine
 def test_umbra_achieves_full_recall_zero_fp():
     scores = run_detection_benchmark()
-    umbra = next(s for s in scores if s.name == "umbra-core")
+    umbra = next(s for s in scores if s.name == "signetry-core")
     assert umbra.ran is True
     assert umbra.recall == 1.0, f"expected full recall, got {umbra.recall} (missed {umbra.missed})"
     assert umbra.false_positives == 0
@@ -72,7 +72,7 @@ def test_false_positive_counted_when_finding_in_safe_file(tmp_path):
 def test_markdown_renders_table():
     scores = run_detection_benchmark()
     md = render_markdown(scores)
-    assert "Recall" in md and "umbra-core" in md
+    assert "Recall" in md and "signetry-core" in md
     assert "100%" in md  # umbra full recall
 
 
@@ -86,6 +86,6 @@ def test_ground_truth_excludes_open_redirect_from_in_scope():
 def test_semgrep_layer_optional_does_not_break(tmp_path):
     # use_semgrep=True must not error even if semgrep is absent.
     scores = run_detection_benchmark(use_semgrep=True)
-    umbra = next(s for s in scores if s.name == "umbra-core")
+    umbra = next(s for s in scores if s.name == "signetry-core")
     assert umbra.ran is True
     assert umbra.recall == 1.0
