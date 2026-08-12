@@ -3,7 +3,7 @@ name: Reviewer
 # Advisory PR review (umbra-reviewer): surfaces architecture + security issues
 # and posts one recommendation comment. Advisory only — it never merges and never
 # fails the PR. Changes to security-sensitive surfaces (workflows, packaging) are
-# escalated to a human. See https://github.com/bkd-dotcom/umbra-reviewer
+# escalated to a human. See https://github.com/Signetry/reviewer
 on:
   pull_request:
 
@@ -24,7 +24,7 @@ jobs:
           python-version: "3.12"
       - name: Install umbra-reviewer
         # source-available (All Rights Reserved); install from source, not PyPI.
-        run: pip install "umbra-reviewer @ git+https://github.com/bkd-dotcom/umbra-reviewer@v0.1.1"
+        run: pip install "umbra-reviewer @ git+https://github.com/Signetry/reviewer@v0.1.1"
       - name: Compute the PR diff
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}

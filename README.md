@@ -6,14 +6,14 @@
 > This repository is strictly for viewing and contributing to the original project. You may not use, copy, modify, distribute, or commercialize this code for your own personal or commercial projects without explicit written permission. Only the original author retains the right to use and monetize this project.
 
 
-**The public adversarial evaluation suite for [Umbra](https://github.com/bkd-dotcom/umbra-umbrella).**
+**The public adversarial evaluation suite for [Umbra](https://github.com/Signetry/signetry).**
 
 Measures **attack success rate (ASR)** and **utility-under-defense** for coding-agent
-threats — governed by the same [`umbra-core`](https://github.com/bkd-dotcom/umbra-core)
+threats — governed by the same [`umbra-core`](https://github.com/Signetry/core)
 pipeline production uses.
 
 [![Source-available](https://img.shields.io/badge/source-available-informational.svg)](CLA.md)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome%20(CLA)-brightgreen.svg)](https://github.com/bkd-dotcom/umbra-umbrella/issues/10)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome%20(CLA)-brightgreen.svg)](https://github.com/Signetry/signetry/issues/10)
 
 </div>
 
@@ -125,14 +125,14 @@ print(report.overall())          # asr_ungoverned, asr_governed, utility_governe
 
 ## Contributing
 
-**Source-available, PRs welcome** (not open source; All Rights Reserved). Contribute under the [CLA](CLA.md) — you're **credited** ([CONTRIBUTORS.md](CONTRIBUTORS.md)) but gain no ownership or right to use/sell it. Start at the [good-first-issues board](https://github.com/bkd-dotcom/umbra-umbrella/issues/10). The best contribution is **a new test case**. Add a detection
+**Source-available, PRs welcome** (not open source; All Rights Reserved). Contribute under the [CLA](CLA.md) — you're **credited** ([CONTRIBUTORS.md](CONTRIBUTORS.md)) but gain no ownership or right to use/sell it. Start at the [good-first-issues board](https://github.com/Signetry/signetry/issues/10). The best contribution is **a new test case**. Add a detection
 **corpus case** (`umbra_eval/detection/corpus/`, with a cited `provenance`; SAFE
 decoys must stay 0 false positives) or an **adversarial scenario**
 (`umbra_eval/scenarios/`). See [CONTRIBUTING.md](CONTRIBUTING.md) and
 [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md). Every case ships with a test; CI gates the
 benchmark on 100% recall / 0 FP.
 
-Part of the Umbra platform — see the [umbrella overview](https://github.com/bkd-dotcom/umbra-umbrella).
+Part of the Umbra platform — see the [umbrella overview](https://github.com/Signetry/signetry).
 
 ## License
 

@@ -21,14 +21,14 @@ classifiers = [
     "Topic :: Software Development :: Quality Assurance",
 ]
 dependencies = [
-    "umbra-core @ git+https://github.com/bkd-dotcom/umbra-core@v0.5.4",
+    "umbra-core @ git+https://github.com/Signetry/core@v0.5.4",
 ]
 
 [project.urls]
-Homepage = "https://github.com/bkd-dotcom/umbra-eval"
-Repository = "https://github.com/bkd-dotcom/umbra-eval"
-Issues = "https://github.com/bkd-dotcom/umbra-eval/issues"
-Umbrella = "https://github.com/bkd-dotcom/umbra-umbrella"
+Homepage = "https://github.com/Signetry/eval"
+Repository = "https://github.com/Signetry/eval"
+Issues = "https://github.com/Signetry/eval/issues"
+Umbrella = "https://github.com/Signetry/signetry"
 
 [project.scripts]
 umbra-eval = "umbra_eval.cli:main"
