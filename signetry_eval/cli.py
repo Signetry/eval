@@ -66,9 +66,9 @@ def cmd_benchmark(args: argparse.Namespace) -> int:
     else:
         print(render_text(scores))
 
-    umbra = next((s for s in scores if s.name == "signetry-core"), None)
-    if umbra is not None and umbra.recall < args.min_recall:
-        print(f"FAIL: umbra recall {umbra.recall:.0%} < required {args.min_recall:.0%}",
+    signetry = next((s for s in scores if s.name == "signetry-core"), None)
+    if signetry is not None and signetry.recall < args.min_recall:
+        print(f"FAIL: Signetry recall {signetry.recall:.0%} < required {args.min_recall:.0%}",
               file=sys.stderr)
         return 1
     return 0
@@ -98,14 +98,14 @@ def cmd_corpus(args: argparse.Namespace) -> int:
     else:
         print(render_corpus_text(scores))
 
-    umbra = next((s for s in scores if s.name == "signetry-core"), None)
-    if umbra is not None:
-        if umbra.recall < args.min_recall:
-            print(f"FAIL: umbra recall {umbra.recall:.0%} < required {args.min_recall:.0%}",
+    signetry = next((s for s in scores if s.name == "signetry-core"), None)
+    if signetry is not None:
+        if signetry.recall < args.min_recall:
+            print(f"FAIL: Signetry recall {signetry.recall:.0%} < required {args.min_recall:.0%}",
                   file=sys.stderr)
             return 1
-        if umbra.false_positive_total > args.max_fp:
-            print(f"FAIL: umbra false positives {umbra.false_positive_total} > allowed {args.max_fp}",
+        if signetry.false_positive_total > args.max_fp:
+            print(f"FAIL: Signetry false positives {signetry.false_positive_total} > allowed {args.max_fp}",
                   file=sys.stderr)
             return 1
     return 0

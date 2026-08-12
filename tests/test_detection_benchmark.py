@@ -27,12 +27,12 @@ requires_engine = pytest.mark.skipif(
 
 
 @requires_engine
-def test_umbra_achieves_full_recall_zero_fp():
+def test_signetry_achieves_full_recall_zero_fp():
     scores = run_detection_benchmark()
-    umbra = next(s for s in scores if s.name == "signetry-core")
-    assert umbra.ran is True
-    assert umbra.recall == 1.0, f"expected full recall, got {umbra.recall} (missed {umbra.missed})"
-    assert umbra.false_positives == 0
+    signetry = next(s for s in scores if s.name == "signetry-core")
+    assert signetry.ran is True
+    assert signetry.recall == 1.0, f"expected full recall, got {signetry.recall} (missed {signetry.missed})"
+    assert signetry.false_positives == 0
 
 
 @requires_engine
@@ -73,7 +73,7 @@ def test_markdown_renders_table():
     scores = run_detection_benchmark()
     md = render_markdown(scores)
     assert "Recall" in md and "signetry-core" in md
-    assert "100%" in md  # umbra full recall
+    assert "100%" in md  # signetry full recall
 
 
 def test_ground_truth_excludes_open_redirect_from_in_scope():
@@ -86,6 +86,6 @@ def test_ground_truth_excludes_open_redirect_from_in_scope():
 def test_semgrep_layer_optional_does_not_break(tmp_path):
     # use_semgrep=True must not error even if semgrep is absent.
     scores = run_detection_benchmark(use_semgrep=True)
-    umbra = next(s for s in scores if s.name == "signetry-core")
-    assert umbra.ran is True
-    assert umbra.recall == 1.0
+    signetry = next(s for s in scores if s.name == "signetry-core")
+    assert signetry.ran is True
+    assert signetry.recall == 1.0

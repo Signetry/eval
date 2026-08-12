@@ -64,7 +64,7 @@ def test_families_all_present():
 
 
 @requires_engine
-def test_umbra_full_recall_zero_fp_on_corpus():
+def test_signetry_full_recall_zero_fp_on_corpus():
     """With cross-file taint + multi-language rules, the deterministic engine now
     reaches full recall on the corpus at ZERO false positives."""
     score = run_corpus_benchmark("signetry-core", signetry_corpus_adapter())
@@ -79,14 +79,14 @@ def test_umbra_full_recall_zero_fp_on_corpus():
 
 
 @requires_engine
-def test_umbra_detects_cross_file_taint():
+def test_signetry_detects_cross_file_taint():
     score = run_corpus_benchmark("signetry-core", signetry_corpus_adapter())
     xfile = next(c for c in score.cases if c.case_id == "HARD-21-crossfile-taint-python")
     assert xfile.detected == xfile.expected == 1
 
 
 @requires_engine
-def test_umbra_covers_all_seven_languages():
+def test_signetry_covers_all_seven_languages():
     score = run_corpus_benchmark("signetry-core", signetry_corpus_adapter())
     by_lang = score.by_language()
     for lang in ("go", "java", "ruby", "php", "csharp"):
@@ -95,7 +95,7 @@ def test_umbra_covers_all_seven_languages():
 
 
 @requires_engine
-def test_umbra_detects_multivariable_lang_taint():
+def test_signetry_detects_multivariable_lang_taint():
     """The multi-variable (source->local->sink) cases across Go/Java/PHP/C# must be
     detected — the gap the pure per-line regex tier had."""
     score = run_corpus_benchmark("signetry-core", signetry_corpus_adapter())
@@ -106,7 +106,7 @@ def test_umbra_detects_multivariable_lang_taint():
 
 
 @requires_engine
-def test_umbra_no_fp_on_parameterized_safe_decoys():
+def test_signetry_no_fp_on_parameterized_safe_decoys():
     """Parameterised / prepared-statement SAFE decoys across languages must not
     trip (the false-positive axis LLMs trade recall to control)."""
     score = run_corpus_benchmark("signetry-core", signetry_corpus_adapter())
@@ -117,7 +117,7 @@ def test_umbra_no_fp_on_parameterized_safe_decoys():
 
 
 @requires_engine
-def test_umbra_detects_crossfile_taint_in_non_python_langs():
+def test_signetry_detects_crossfile_taint_in_non_python_langs():
     score = run_corpus_benchmark("signetry-core", signetry_corpus_adapter())
     for cid in ("XLANG-46-go-crossfile-sqli", "XLANG-47-java-crossfile-sqli",
                 "XLANG-48-php-crossfile-sqli", "XLANG-50-ruby-crossfile-sqli",
@@ -127,14 +127,14 @@ def test_umbra_detects_crossfile_taint_in_non_python_langs():
 
 
 @requires_engine
-def test_umbra_detects_taint_through_helper():
+def test_signetry_detects_taint_through_helper():
     score = run_corpus_benchmark("signetry-core", signetry_corpus_adapter())
     craft = next(c for c in score.cases if c.case_id == "CRAFT-15-taint-through-helper-python")
     assert craft.detected == craft.expected == 1
 
 
 @requires_engine
-def test_umbra_no_fp_on_safe_decoys():
+def test_signetry_no_fp_on_safe_decoys():
     score = run_corpus_benchmark("signetry-core", signetry_corpus_adapter())
     for c in score.cases:
         if c.is_safe:
@@ -164,14 +164,14 @@ def test_head_to_head_includes_committed_claude_capture():
 
 
 @requires_engine
-def test_umbra_beats_or_matches_claude_on_corpus():
+def test_signetry_beats_or_matches_claude_on_corpus():
     """The headline claim: on the harder corpus, the deterministic engine's recall
     is at least as high as the captured Opus 4.8 baseline, at zero false positives."""
     scores = run_corpus_head_to_head()
-    umbra = next(s for s in scores if s.name == "signetry-core")
+    signetry = next(s for s in scores if s.name == "signetry-core")
     claude = next(s for s in scores if s.name == "claude-code-security-review")
-    assert umbra.recall >= claude.recall
-    assert umbra.false_positive_total == 0
+    assert signetry.recall >= claude.recall
+    assert signetry.false_positive_total == 0
 
 
 def test_committed_capture_file_exists():
