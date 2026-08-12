@@ -7,8 +7,8 @@ from __future__ import annotations
 
 import pytest
 
-from umbra_eval import ALL_SCENARIOS, run_all
-from umbra_eval.scenario import CATEGORY_UTILITY
+from signetry_eval import ALL_SCENARIOS, run_all
+from signetry_eval.scenario import CATEGORY_UTILITY
 
 
 @pytest.mark.parametrize("scenario", ALL_SCENARIOS, ids=lambda s: s.id)
@@ -72,7 +72,7 @@ def test_report_json_serializable():
 
 
 def test_markdown_carries_honesty_note():
-    from umbra_eval import render_markdown
+    from signetry_eval import render_markdown
     md = render_markdown(run_all())
     assert "not a claim that injection is solved" in md
     assert "bounded + quarantined + dual-verified + receipted" in md

@@ -1,7 +1,7 @@
 [project]
-name = "umbra-eval"
+name = "signetry-eval"
 version = "0.2.2"
-description = "The public adversarial evaluation suite for Umbra: measures attack success rate (ASR) and utility-under-defense for coding-agent prompt injection, skill/MCP poisoning, and memory-injection threats, governed by umbra-core."
+description = "The public adversarial evaluation suite for Signetry: measures attack success rate (ASR) and utility-under-defense for coding-agent prompt injection, skill/MCP poisoning, and memory-injection threats, governed by signetry-core."
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "Proprietary — All Rights Reserved" }
@@ -21,7 +21,7 @@ classifiers = [
     "Topic :: Software Development :: Quality Assurance",
 ]
 dependencies = [
-    "umbra-core @ git+https://github.com/Signetry/core@v0.5.4",
+    "signetry-core @ git+https://github.com/Signetry/core@v0.6.0",
 ]
 
 [project.urls]
@@ -31,7 +31,7 @@ Issues = "https://github.com/Signetry/eval/issues"
 Umbrella = "https://github.com/Signetry/signetry"
 
 [project.scripts]
-umbra-eval = "umbra_eval.cli:main"
+signetry-eval = "signetry_eval.cli:main"
 
 [project.optional-dependencies]
 dev = [
@@ -44,11 +44,11 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hatch.metadata]
-# umbra-core is a direct git reference (All Rights Reserved; not on PyPI).
+# signetry-core is a direct git reference (All Rights Reserved; not on PyPI).
 allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
-packages = ["umbra_eval"]
+packages = ["signetry_eval"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

@@ -1,8 +1,8 @@
 # Competitor captures
 
 These JSON files are **real captured outputs** of competitor scanners run against
-the 20-case public corpus (`umbra_eval/detection/corpus/`). They are replayed
-offline by `umbra-eval corpus --claude-capture <file>` so the head-to-head is
+the 20-case public corpus (`signetry_eval/detection/corpus/`). They are replayed
+offline by `signetry-eval corpus --claude-capture <file>` so the head-to-head is
 reproducible in CI without credentials.
 
 Provenance (how each was produced):
@@ -13,7 +13,7 @@ Provenance (how each was produced):
 
 Regenerate with (requires the `claude` CLI + credentials):
 
-    python -m umbra_eval.detection.capture_claude out.json claude-opus-4-8
+    python -m signetry_eval.detection.capture_claude out.json claude-opus-4-8
 
 Capture shape (per case id):
 

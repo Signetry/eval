@@ -6,7 +6,7 @@ from .benchmark import ScannerScore
 
 def render_markdown(scores: list[ScannerScore]) -> str:
     lines = [
-        "# Umbra detection benchmark — head to head",
+        "# Signetry detection benchmark — head to head",
         "",
         "> Recall and false positives on a shared ground-truth fixture (13 in-scope",
         "> planted vulnerabilities across Python + JavaScript). Open-redirect is",
@@ -35,17 +35,17 @@ def render_markdown(scores: list[ScannerScore]) -> str:
         "",
         "---",
         "",
-        "Detection parity is the table-stakes axis. The differentiator Umbra adds on "
+        "Detection parity is the table-stakes axis. The differentiator Signetry adds on "
         "top — earned/revocable authority, on-disk prompt-injection quarantine, an "
         "independent verifier the writer cannot bypass, and an Ed25519-signed receipt — "
-        "is measured by the ASR / utility suite (`umbra-eval run`), which the scanner "
+        "is measured by the ASR / utility suite (`signetry-eval run`), which the scanner "
         "tools do not attempt.",
     ]
     return "\n".join(lines)
 
 
 def render_text(scores: list[ScannerScore]) -> str:
-    out = ["Umbra detection benchmark (head to head)", "=" * 44]
+    out = ["Signetry detection benchmark (head to head)", "=" * 44]
     for s in scores:
         if not s.ran:
             out.append(f"  {s.name:32} NOT RUN  ({s.note})")

@@ -1,7 +1,19 @@
-# Changelog — umbra-eval
+# Changelog — signetry-eval
 
 Follows [Keep a Changelog](https://keepachangelog.com/) / [SemVer](https://semver.org/).
 Until `1.0.0` the public API may change between minor versions.
+
+## [Unreleased]
+
+### Changed — Signetry rename (breaking)
+
+- Renamed the distribution `umbra-eval` → `signetry-eval` and the import package
+  `umbra_eval` → `signetry_eval`. The console command is now `signetry-eval`.
+- All `UMBRA_*` environment variables are now `SIGNETRY_*`; the config directory
+  is `.signetry/` (was `.umbra/`). Product/brand prose updated to **Signetry**.
+- Core dependency renamed and pinned: `signetry-core @ git+https://github.com/Signetry/core@v0.6.0`
+  (was `umbra-core @ ...@v0.5.4`). Imports moved `umbra_core` → `signetry_core`.
+- No backward-compatibility fallbacks are provided.
 
 ## [0.2.2] — 2026-07-30
 

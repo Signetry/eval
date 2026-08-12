@@ -3,7 +3,7 @@
 The manipulation rides in an extension the agent LOADS — a skill's ``SKILL.md`` or
 an MCP server's tool ``description`` — before the agent proposes any change, so the
 per-change pipeline never sees it. Ungoverned, the poisoned documentation reaches
-the model as prose it treats as instructions. Governed, ``umbra admit-extension``
+the model as prose it treats as instructions. Governed, ``signetry admit-extension``
 fingerprints the bytes and quarantines the documentation *before* load, denying an
 extension whose docs carry a manipulation.
 """
@@ -13,13 +13,13 @@ import json
 import tempfile
 from pathlib import Path
 
-from umbra_core import admit_extension
+from signetry_core import admit_extension
 
 from ..scenario import CATEGORY_SKILL_POISON, CATEGORY_UTILITY, Outcome, ScenarioResult
 
 
 def _write(files: dict[str, str]) -> Path:
-    root = Path(tempfile.mkdtemp(prefix="umbra-eval-ext-"))
+    root = Path(tempfile.mkdtemp(prefix="signetry-eval-ext-"))
     for rel, content in files.items():
         p = root / rel
         p.parent.mkdir(parents=True, exist_ok=True)

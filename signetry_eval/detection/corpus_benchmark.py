@@ -9,7 +9,7 @@ Per-case scoring against ground truth:
 Aggregate metrics: recall (detected / expected), false-positive count, per-family
 breakdown, and a per-language breakdown so breadth is visible. Competitor scanners
 are scored from captured JSON (replayed offline) or reported ``not_run`` — never
-faked, matching umbra-eval's honesty rule.
+faked, matching signetry-eval's honesty rule.
 """
 from __future__ import annotations
 
@@ -125,7 +125,7 @@ def run_corpus_benchmark(name: str, adapter: CorpusAdapter, *, note: str = "") -
     """Run ``adapter`` over every case in the corpus and aggregate the score."""
     scores: list[CaseScore] = []
     for case in ALL_CASES:
-        root = Path(tempfile.mkdtemp(prefix="umbra-corpus-"))
+        root = Path(tempfile.mkdtemp(prefix="signetry-corpus-"))
         try:
             for rel, content in case.files.items():
                 p = root / rel

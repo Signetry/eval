@@ -1,10 +1,10 @@
-"""``umbra-eval`` CLI — run the adversarial suite and print ASR / utility.
+"""``signetry-eval`` CLI — run the adversarial suite and print ASR / utility.
 
-    umbra-eval run                 # run all scenarios, human summary
-    umbra-eval run --json          # machine-readable report
-    umbra-eval run --markdown      # publishable markdown report
-    umbra-eval run --category ipi  # filter by threat category
-    umbra-eval list                # list scenarios
+    signetry-eval run                 # run all scenarios, human summary
+    signetry-eval run --json          # machine-readable report
+    signetry-eval run --markdown      # publishable markdown report
+    signetry-eval run --category ipi  # filter by threat category
+    signetry-eval list                # list scenarios
 
 Exit code is non-zero if the defense did not hold on every adversarial scenario
 (so it can gate CI as a regression guard).
@@ -31,7 +31,7 @@ def cmd_run(args: argparse.Namespace) -> int:
         print(render_markdown(report))
     else:
         o = report.overall()
-        print("Umbra adversarial evaluation")
+        print("Signetry adversarial evaluation")
         print("=" * 40)
         print(f"scenarios            : {o['scenarios']} ({o['attack_scenarios']} adversarial)")
         print(f"ASR ungoverned       : {o['asr_ungoverned']:.0%}")
@@ -50,7 +50,7 @@ def cmd_run(args: argparse.Namespace) -> int:
 
 def cmd_benchmark(args: argparse.Namespace) -> int:
     """Head-to-head detection benchmark: recall + false positives vs competitor
-    scanners on a shared ground-truth fixture. Exits non-zero if Umbra's recall
+    scanners on a shared ground-truth fixture. Exits non-zero if Signetry's recall
     falls below ``--min-recall`` (default 1.0 = must find every in-scope vuln)."""
     from .detection import render_markdown, render_text, run_detection_benchmark
 
@@ -66,7 +66,7 @@ def cmd_benchmark(args: argparse.Namespace) -> int:
     else:
         print(render_text(scores))
 
-    umbra = next((s for s in scores if s.name == "umbra-core"), None)
+    umbra = next((s for s in scores if s.name == "signetry-core"), None)
     if umbra is not None and umbra.recall < args.min_recall:
         print(f"FAIL: umbra recall {umbra.recall:.0%} < required {args.min_recall:.0%}",
               file=sys.stderr)
@@ -77,9 +77,9 @@ def cmd_benchmark(args: argparse.Namespace) -> int:
 def cmd_corpus(args: argparse.Namespace) -> int:
     """20-case public detection corpus, head-to-head vs competitor scanners.
 
-    Umbra runs live (deterministic, offline); competitor scores come from a
+    Signetry runs live (deterministic, offline); competitor scores come from a
     captured per-case JSON (replayed) or are shown as not-run. Exits non-zero if
-    Umbra recall falls below ``--min-recall`` or it raises any false positive."""
+    Signetry recall falls below ``--min-recall`` or it raises any false positive."""
     from .detection import (
         render_corpus_markdown,
         render_corpus_text,
@@ -98,7 +98,7 @@ def cmd_corpus(args: argparse.Namespace) -> int:
     else:
         print(render_corpus_text(scores))
 
-    umbra = next((s for s in scores if s.name == "umbra-core"), None)
+    umbra = next((s for s in scores if s.name == "signetry-core"), None)
     if umbra is not None:
         if umbra.recall < args.min_recall:
             print(f"FAIL: umbra recall {umbra.recall:.0%} < required {args.min_recall:.0%}",
@@ -112,9 +112,9 @@ def cmd_corpus(args: argparse.Namespace) -> int:
 
 
 def cmd_realrepo(args: argparse.Namespace) -> int:
-    """Scan the real public-repo detection cases with Umbra (network + git).
+    """Scan the real public-repo detection cases with Signetry (network + git).
 
-    Demonstrates the live `umbra scan <url>` entry point on real vulnerable apps,
+    Demonstrates the live `signetry scan <url>` entry point on real vulnerable apps,
     aggregated. Report-only; exits 0 unless a clone/scan hard-fails everywhere."""
     from .detection.real_repo_benchmark import render_text, scan_all_real_repos
 
@@ -134,7 +134,7 @@ def cmd_list(args: argparse.Namespace) -> int:
 
 
 def build_parser() -> argparse.ArgumentParser:
-    p = argparse.ArgumentParser(prog="umbra-eval", description="Umbra adversarial evaluation suite.")
+    p = argparse.ArgumentParser(prog="signetry-eval", description="Signetry adversarial evaluation suite.")
     sub = p.add_subparsers(dest="command", required=True)
 
     p_run = sub.add_parser("run", help="Run scenarios and report ASR / utility.")
@@ -144,26 +144,26 @@ def build_parser() -> argparse.ArgumentParser:
     p_run.set_defaults(func=cmd_run)
 
     p_bench = sub.add_parser("benchmark", help="Head-to-head detection benchmark: recall + false positives vs competitor scanners on a shared fixture.")
-    p_bench.add_argument("--semgrep", action="store_true", help="Enable Umbra's Semgrep layer if installed.")
+    p_bench.add_argument("--semgrep", action="store_true", help="Enable Signetry's Semgrep layer if installed.")
     p_bench.add_argument("--claude-capture", help="Path to a captured claude-code-security-review findings JSON to replay.")
     p_bench.add_argument("--codex-capture", help="Path to a captured @openai/codex-security findings JSON to replay.")
-    p_bench.add_argument("--min-recall", type=float, default=1.0, help="Exit non-zero if Umbra recall is below this (default 1.0).")
+    p_bench.add_argument("--min-recall", type=float, default=1.0, help="Exit non-zero if Signetry recall is below this (default 1.0).")
     p_bench.add_argument("--json", action="store_true", help="Emit the scores as JSON.")
     p_bench.add_argument("--markdown", action="store_true", help="Emit a publishable markdown comparison table.")
     p_bench.set_defaults(func=cmd_benchmark)
 
     p_corpus = sub.add_parser("corpus", help="20-case public detection corpus, head-to-head vs competitor scanners (recall, false positives, by-language).")
-    p_corpus.add_argument("--semgrep", action="store_true", help="Enable Umbra's Semgrep layer if installed.")
+    p_corpus.add_argument("--semgrep", action="store_true", help="Enable Signetry's Semgrep layer if installed.")
     p_corpus.add_argument("--claude-capture", help="Per-case JSON capture of claude-code-security-review output to replay.")
     p_corpus.add_argument("--codex-capture", help="Per-case JSON capture of @openai/codex-security output to replay.")
-    p_corpus.add_argument("--min-recall", type=float, default=1.0, help="Exit non-zero if Umbra recall is below this (default 1.0; the deterministic engine now covers cross-file taint and 7 languages).")
-    p_corpus.add_argument("--max-fp", type=int, default=0, help="Exit non-zero if Umbra raises more than this many false positives (default 0).")
+    p_corpus.add_argument("--min-recall", type=float, default=1.0, help="Exit non-zero if Signetry recall is below this (default 1.0; the deterministic engine now covers cross-file taint and 7 languages).")
+    p_corpus.add_argument("--max-fp", type=int, default=0, help="Exit non-zero if Signetry raises more than this many false positives (default 0).")
     p_corpus.add_argument("--json", action="store_true", help="Emit the full scores as JSON.")
     p_corpus.add_argument("--markdown", action="store_true", help="Emit a publishable markdown comparison table.")
     p_corpus.set_defaults(func=cmd_corpus)
 
-    p_real = sub.add_parser("realrepo", help="Scan real public vulnerable repos with Umbra (network + git): live entry-point demo on real code.")
-    p_real.add_argument("--semgrep", action="store_true", help="Enable Umbra's Semgrep layer if installed.")
+    p_real = sub.add_parser("realrepo", help="Scan real public vulnerable repos with Signetry (network + git): live entry-point demo on real code.")
+    p_real.add_argument("--semgrep", action="store_true", help="Enable Signetry's Semgrep layer if installed.")
     p_real.add_argument("--depth", type=int, default=1, help="Clone depth (default 1).")
     p_real.add_argument("--json", action="store_true", help="Emit results as JSON.")
     p_real.set_defaults(func=cmd_realrepo)

@@ -5,28 +5,28 @@ from pathlib import Path
 
 import pytest
 
-from umbra_eval.detection import (
+from signetry_eval.detection import (
     ALL_CASES,
     run_corpus_benchmark,
     run_corpus_head_to_head,
     safe_cases,
-    umbra_corpus_adapter,
+    signetry_corpus_adapter,
 )
-from umbra_eval.detection.corpus_report import render_markdown
+from signetry_eval.detection.corpus_report import render_markdown
 
-# The detection benchmark needs umbra-core's SAST engine (scan_repository). It ships
-# in umbra-core with the detection-engine feature; when CI installs an older umbra-core
+# The detection benchmark needs signetry-core's SAST engine (scan_repository). It ships
+# in signetry-core with the detection-engine feature; when CI installs an older signetry-core
 # from PyPI, engine-dependent tests skip (corpus-integrity tests still run). They
-# activate automatically once umbra-core with the engine is released.
+# activate automatically once signetry-core with the engine is released.
 try:
-    from umbra_core import scan_repository as _scan_repository  # noqa: F401
+    from signetry_core import scan_repository as _scan_repository  # noqa: F401
     _HAS_ENGINE = True
 except Exception:
     _HAS_ENGINE = False
 
 requires_engine = pytest.mark.skipif(
     not _HAS_ENGINE,
-    reason="umbra-core detection engine (scan_repository) not available in the installed umbra-core",
+    reason="signetry-core detection engine (scan_repository) not available in the installed signetry-core",
 )
 
 # --- corpus integrity -------------------------------------------------------
@@ -60,14 +60,14 @@ def test_families_all_present():
     assert fams == {"public", "academic", "crafted", "hard", "multilang"}
 
 
-# --- umbra detection on the corpus ------------------------------------------
+# --- signetry detection on the corpus ---------------------------------------
 
 
 @requires_engine
 def test_umbra_full_recall_zero_fp_on_corpus():
     """With cross-file taint + multi-language rules, the deterministic engine now
     reaches full recall on the corpus at ZERO false positives."""
-    score = run_corpus_benchmark("umbra-core", umbra_corpus_adapter())
+    score = run_corpus_benchmark("signetry-core", signetry_corpus_adapter())
     assert score.recall == 1.0, (
         f"recall {score.recall}; missed "
         + str([c.case_id for c in score.cases if c.missed_categories])
@@ -80,14 +80,14 @@ def test_umbra_full_recall_zero_fp_on_corpus():
 
 @requires_engine
 def test_umbra_detects_cross_file_taint():
-    score = run_corpus_benchmark("umbra-core", umbra_corpus_adapter())
+    score = run_corpus_benchmark("signetry-core", signetry_corpus_adapter())
     xfile = next(c for c in score.cases if c.case_id == "HARD-21-crossfile-taint-python")
     assert xfile.detected == xfile.expected == 1
 
 
 @requires_engine
 def test_umbra_covers_all_seven_languages():
-    score = run_corpus_benchmark("umbra-core", umbra_corpus_adapter())
+    score = run_corpus_benchmark("signetry-core", signetry_corpus_adapter())
     by_lang = score.by_language()
     for lang in ("go", "java", "ruby", "php", "csharp"):
         assert by_lang.get(lang, {}).get("expected", 0) >= 1
@@ -98,7 +98,7 @@ def test_umbra_covers_all_seven_languages():
 def test_umbra_detects_multivariable_lang_taint():
     """The multi-variable (source->local->sink) cases across Go/Java/PHP/C# must be
     detected — the gap the pure per-line regex tier had."""
-    score = run_corpus_benchmark("umbra-core", umbra_corpus_adapter())
+    score = run_corpus_benchmark("signetry-core", signetry_corpus_adapter())
     for cid in ("LANG-41-go-multivar-sqli", "LANG-42-java-multivar-sqli",
                 "LANG-43-php-multivar-cmdi", "LANG-44-csharp-multivar-sqli"):
         c = next(x for x in score.cases if x.case_id == cid)
@@ -109,7 +109,7 @@ def test_umbra_detects_multivariable_lang_taint():
 def test_umbra_no_fp_on_parameterized_safe_decoys():
     """Parameterised / prepared-statement SAFE decoys across languages must not
     trip (the false-positive axis LLMs trade recall to control)."""
-    score = run_corpus_benchmark("umbra-core", umbra_corpus_adapter())
+    score = run_corpus_benchmark("signetry-core", signetry_corpus_adapter())
     for cid in ("LANG-39-SAFE-go-parameterized", "LANG-40-SAFE-php-prepared",
                 "LANG-45-SAFE-java-parameterized", "XLANG-49-SAFE-go-crossfile-constant"):
         c = next(x for x in score.cases if x.case_id == cid)
@@ -118,7 +118,7 @@ def test_umbra_no_fp_on_parameterized_safe_decoys():
 
 @requires_engine
 def test_umbra_detects_crossfile_taint_in_non_python_langs():
-    score = run_corpus_benchmark("umbra-core", umbra_corpus_adapter())
+    score = run_corpus_benchmark("signetry-core", signetry_corpus_adapter())
     for cid in ("XLANG-46-go-crossfile-sqli", "XLANG-47-java-crossfile-sqli",
                 "XLANG-48-php-crossfile-sqli", "XLANG-50-ruby-crossfile-sqli",
                 "XLANG-51-csharp-crossfile-sqli"):
@@ -128,14 +128,14 @@ def test_umbra_detects_crossfile_taint_in_non_python_langs():
 
 @requires_engine
 def test_umbra_detects_taint_through_helper():
-    score = run_corpus_benchmark("umbra-core", umbra_corpus_adapter())
+    score = run_corpus_benchmark("signetry-core", signetry_corpus_adapter())
     craft = next(c for c in score.cases if c.case_id == "CRAFT-15-taint-through-helper-python")
     assert craft.detected == craft.expected == 1
 
 
 @requires_engine
 def test_umbra_no_fp_on_safe_decoys():
-    score = run_corpus_benchmark("umbra-core", umbra_corpus_adapter())
+    score = run_corpus_benchmark("signetry-core", signetry_corpus_adapter())
     for c in score.cases:
         if c.is_safe:
             assert c.false_positives == 0, f"false positive on safe case {c.case_id}"
@@ -143,7 +143,7 @@ def test_umbra_no_fp_on_safe_decoys():
 
 @requires_engine
 def test_by_language_breakdown_present():
-    score = run_corpus_benchmark("umbra-core", umbra_corpus_adapter())
+    score = run_corpus_benchmark("signetry-core", signetry_corpus_adapter())
     by_lang = score.by_language()
     assert "python" in by_lang and "javascript" in by_lang
     assert by_lang["javascript"]["expected"] >= 3
@@ -156,7 +156,7 @@ def test_by_language_breakdown_present():
 def test_head_to_head_includes_committed_claude_capture():
     scores = run_corpus_head_to_head()
     names = {s.name for s in scores}
-    assert "umbra-core" in names
+    assert "signetry-core" in names
     claude = next(s for s in scores if s.name == "claude-code-security-review")
     # The committed Opus 4.8 capture should be present and replayed.
     assert claude.ran is True
@@ -168,14 +168,14 @@ def test_umbra_beats_or_matches_claude_on_corpus():
     """The headline claim: on the harder corpus, the deterministic engine's recall
     is at least as high as the captured Opus 4.8 baseline, at zero false positives."""
     scores = run_corpus_head_to_head()
-    umbra = next(s for s in scores if s.name == "umbra-core")
+    umbra = next(s for s in scores if s.name == "signetry-core")
     claude = next(s for s in scores if s.name == "claude-code-security-review")
     assert umbra.recall >= claude.recall
     assert umbra.false_positive_total == 0
 
 
 def test_committed_capture_file_exists():
-    p = Path(__file__).parent.parent / "umbra_eval" / "detection" / "captures" / "claude-opus-4-8.json"
+    p = Path(__file__).parent.parent / "signetry_eval" / "detection" / "captures" / "claude-opus-4-8.json"
     assert p.exists(), "committed Opus 4.8 capture is missing"
 
 
@@ -192,4 +192,4 @@ def test_corpus_markdown_renders():
     md = render_markdown(scores)
     assert "public test cases" in md
     assert "Recall by language" in md
-    assert "umbra-core" in md
+    assert "signetry-core" in md

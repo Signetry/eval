@@ -1,11 +1,11 @@
 """Scanner adapters for the head-to-head detection benchmark.
 
-- **Umbra** runs the real ``umbra_core`` detection engine (offline, deterministic).
+- **Signetry** runs the real ``signetry_core`` detection engine (offline, deterministic).
 - **Competitor adapters** replay a PRE-CAPTURED findings JSON (so a paid, credentialed
   run can be recorded once and re-scored offline in CI) — or, when no capture is
   provided, report ``ran=False`` so the tool is shown as *not run* rather than faked.
 
-This mirrors umbra-eval's honesty rule: a tool that did not run is never presented
+This mirrors signetry-eval's honesty rule: a tool that did not run is never presented
 as if it produced results.
 """
 from __future__ import annotations
@@ -16,11 +16,11 @@ from pathlib import Path
 from .benchmark import DetectedFinding, ScannerResult, normalise_category
 
 
-def umbra_adapter(use_semgrep: bool = False):
-    """Adapter running the real umbra-core layered engine over the fixture."""
+def signetry_adapter(use_semgrep: bool = False):
+    """Adapter running the real signetry-core layered engine over the fixture."""
 
     def _run(root: Path) -> ScannerResult:
-        from umbra_core import scan_repository
+        from signetry_core import scan_repository
 
         report = scan_repository(root, use_semgrep=use_semgrep)
         findings = [
@@ -28,7 +28,7 @@ def umbra_adapter(use_semgrep: bool = False):
             for f in report.findings
         ]
         layers = ", ".join(report.layers)
-        return ScannerResult(name="umbra-core", ran=True, findings=findings,
+        return ScannerResult(name="signetry-core", ran=True, findings=findings,
                              note=f"layers: {layers}")
 
     return _run

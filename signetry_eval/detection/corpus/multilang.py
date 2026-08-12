@@ -1,7 +1,7 @@
 """MULTILANG family: coverage across Go, Java, Ruby, PHP, C#.
 
 Language breadth was the axis where LLM scanners (which read any language) had an
-edge over an AST engine limited to Python/JS. These cases prove Umbra's native
+edge over an AST engine limited to Python/JS. These cases prove Signetry's native
 regex tier now covers the common server languages for the top injection/crypto
 classes. Each case cites the CWE; SAFE polyglot decoys are included to keep the
 false-positive measurement honest across languages too.

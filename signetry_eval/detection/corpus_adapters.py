@@ -1,6 +1,6 @@
 """Adapters for the 20-case corpus benchmark.
 
-- ``umbra_corpus_adapter`` runs the real umbra-core engine per case.
+- ``signetry_corpus_adapter`` runs the real signetry-core engine per case.
 - ``captured_corpus_adapter`` replays a competitor's captured findings, keyed by
   case id, from a single JSON capture file of the shape:
       {"CASE-ID": {"findings": [{"file": ..., "category": ...}, ...]}, ...}
@@ -18,16 +18,16 @@ from .corpus import Case
 from .corpus_benchmark import CorpusAdapter
 
 
-def umbra_corpus_adapter(use_semgrep: bool = False) -> CorpusAdapter:
+def signetry_corpus_adapter(use_semgrep: bool = False) -> CorpusAdapter:
     def _run(case: Case, root: Path) -> ScannerResult:
-        from umbra_core import scan_repository
+        from signetry_core import scan_repository
 
         report = scan_repository(root, use_semgrep=use_semgrep)
         findings = [
             DetectedFinding(file=f.file, category=normalise_category(f.category))
             for f in report.findings
         ]
-        return ScannerResult(name="umbra-core", ran=True, findings=findings)
+        return ScannerResult(name="signetry-core", ran=True, findings=findings)
 
     return _run
 

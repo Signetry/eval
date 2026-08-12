@@ -1,8 +1,8 @@
-"""Harness to scan the real public-repo detection cases with Umbra.
+"""Harness to scan the real public-repo detection cases with Signetry.
 
 Network + git required (opt-in). For each pinned repo: shallow-clone, run the
-Umbra engine, and report finding counts by category. This is exactly the
-``umbra scan <url>`` path, aggregated for the benchmark, so it demonstrates the
+Signetry engine, and report finding counts by category. This is exactly the
+``signetry scan <url>`` path, aggregated for the benchmark, so it demonstrates the
 live entry point on real code rather than snippets.
 """
 from __future__ import annotations
@@ -42,8 +42,8 @@ def _git_available() -> bool:
 
 def scan_real_repo(case: RealRepoCase, *, use_semgrep: bool = False, depth: int = 1) -> RealRepoResult:
     """Clone + scan one real repo. Returns a result; never raises (records notes)."""
-    from umbra_core import scan_repository
-    from umbra_core.pipeline.findings.fetch import resolve_scan_target
+    from signetry_core import scan_repository
+    from signetry_core.pipeline.findings.fetch import resolve_scan_target
 
     if not _git_available():
         return RealRepoResult(case.id, case.url, ran=False, note="git unavailable")
@@ -71,7 +71,7 @@ def scan_all_real_repos(*, use_semgrep: bool = False, depth: int = 1) -> list[Re
 
 
 def render_text(results: list[RealRepoResult]) -> str:
-    out = ["Umbra real public-repo detection", "=" * 44]
+    out = ["Signetry real public-repo detection", "=" * 44]
     for r in results:
         if not r.ran:
             out.append(f"  {r.id:28} NOT RUN ({r.note})")

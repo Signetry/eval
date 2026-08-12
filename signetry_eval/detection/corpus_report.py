@@ -11,7 +11,7 @@ def render_markdown(scores: list[CorpusScore]) -> str:
     n_expected = sum(len(c.expected) for c in ALL_CASES)
     langs = sorted({c.language for c in ALL_CASES})
     lines = [
-        f"# Umbra detection benchmark — {n_cases} public test cases",
+        f"# Signetry detection benchmark — {n_cases} public test cases",
         "",
         f"> {n_cases} cases ({n_cases - n_safe} vulnerable, {n_safe} safe decoys) across "
         f"{len(langs)} languages ({', '.join(langs)}), {n_expected} ground-truth findings.",
@@ -57,7 +57,7 @@ def render_markdown(scores: list[CorpusScore]) -> str:
         # enabled (its community rules don't model every sanitizer). This is why the
         # Semgrep layer is opt-in and non-gating.
         semgrep_fp = (
-            s.ran and s.name == "umbra-core" and s.false_positive_total > 0
+            s.ran and s.name == "signetry-core" and s.false_positive_total > 0
             and "semgrep" in (s.note or "").lower()
         )
         if semgrep_fp:
@@ -71,18 +71,18 @@ def render_markdown(scores: list[CorpusScore]) -> str:
         "",
         "---",
         "",
-        "Umbra reaches this on the **deterministic, offline, free** layer — no model, "
+        "Signetry reaches this on the **deterministic, offline, free** layer — no model, "
         "no per-scan cost, no quota, and the same result every run. The scanner tools "
         "need paid model calls per scan and can drift between runs. Detection parity is "
-        "table stakes; the governance layer Umbra adds on top (earned authority, "
+        "table stakes; the governance layer Signetry adds on top (earned authority, "
         "prompt-injection quarantine, independent verifier, Ed25519-signed receipts) is "
-        "measured by `umbra-eval run` and is not attempted by either scanner.",
+        "measured by `signetry-eval run` and is not attempted by either scanner.",
     ]
     return "\n".join(lines)
 
 
 def render_text(scores: list[CorpusScore]) -> str:
-    out = [f"Umbra detection benchmark — {len(ALL_CASES)} public cases", "=" * 46]
+    out = [f"Signetry detection benchmark — {len(ALL_CASES)} public cases", "=" * 46]
     for s in scores:
         if not s.ran:
             out.append(f"  {s.name:32} NOT RUN ({s.note})")
