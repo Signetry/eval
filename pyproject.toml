@@ -1,6 +1,6 @@
 [project]
 name = "signetry-eval"
-version = "0.2.2"
+version = "0.2.3"
 description = "The public adversarial evaluation suite for Signetry: measures attack success rate (ASR) and utility-under-defense for coding-agent prompt injection, skill/MCP poisoning, and memory-injection threats, governed by signetry-core."
 readme = "README.md"
 requires-python = ">=3.11"
