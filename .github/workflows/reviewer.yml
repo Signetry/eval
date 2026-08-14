@@ -1,6 +1,6 @@
 name: Reviewer
 
-# Advisory PR review (umbra-reviewer): surfaces architecture + security issues
+# Advisory PR review (signetry-reviewer): surfaces architecture + security issues
 # and posts one recommendation comment. Advisory only — it never merges and never
 # fails the PR. Changes to security-sensitive surfaces (workflows, packaging) are
 # escalated to a human. See https://github.com/Signetry/reviewer
@@ -22,9 +22,9 @@ jobs:
       - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
-      - name: Install umbra-reviewer
+      - name: Install signetry-reviewer
         # source-available (All Rights Reserved); install from source, not PyPI.
-        run: pip install "umbra-reviewer @ git+https://github.com/Signetry/reviewer@v0.1.1"
+        run: pip install "signetry-reviewer @ git+https://github.com/Signetry/reviewer@v0.1.2"
       - name: Compute the PR diff
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
@@ -40,7 +40,7 @@ jobs:
           PR: ${{ github.event.pull_request.number }}
         run: |
           set -uo pipefail
-          umbra-reviewer review \
+          signetry-reviewer review \
             --diff "$OUT/pr.diff" \
             --repo "$GITHUB_REPOSITORY" \
             --pr "$PR" \
@@ -58,7 +58,7 @@ jobs:
             const out = process.env.OUT || '';
             let body = 'Signetry Reviewer: no review was produced.';
             try { body = fs.readFileSync(path.join(out, 'comment.md'), 'utf8'); } catch (e) {}
-            const marker = '<!-- umbra-reviewer -->';
+            const marker = '<!-- signetry-reviewer -->';
             body = marker + '\n' + body;
             const { owner, repo } = context.repo;
             const issue_number = context.issue.number;
