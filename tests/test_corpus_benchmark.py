@@ -193,3 +193,58 @@ def test_corpus_markdown_renders():
     assert "public test cases" in md
     assert "Recall by language" in md
     assert "signetry-core" in md
+
+
+# --- OWASP breadth additions (eval#11 XXE, #12 path traversal, #29 Go SSRF) ---
+
+
+def test_corpus_includes_xxe_traversal_ssrf_cases():
+    ids = {c.id for c in ALL_CASES}
+    assert {"LANG-53-java-xxe", "LANG-54-php-xxe", "LANG-56-go-path-traversal",
+            "LANG-57-java-path-traversal", "LANG-59-go-ssrf"} <= ids
+
+
+def test_corpus_covers_xxe_traversal_ssrf_in_multiple_languages():
+    """Each of the three classes must be represented in at least two languages, so
+    the corpus measures breadth rather than one language's rule."""
+    by_class: dict[str, set[str]] = {}
+    for c in ALL_CASES:
+        for e in c.expected:
+            by_class.setdefault(e.category, set()).add(c.language)
+    assert {"java", "php"} <= by_class.get("xxe", set())
+    assert {"go", "java"} <= by_class.get("path_traversal", set())
+    assert {"go", "python"} <= by_class.get("ssrf", set())
+
+
+@requires_engine
+def test_signetry_detects_new_owasp_breadth_cases():
+    score = run_corpus_benchmark("signetry-core", signetry_corpus_adapter())
+    for cid in ("LANG-53-java-xxe", "LANG-54-php-xxe", "LANG-56-go-path-traversal",
+                "LANG-57-java-path-traversal", "LANG-59-go-ssrf"):
+        c = next(x for x in score.cases if x.case_id == cid)
+        assert c.detected == c.expected >= 1, f"{cid} not detected"
+
+
+@requires_engine
+def test_signetry_no_fp_on_new_safe_decoys():
+    """The safe decoys probe the precision distinctions these rules must make:
+    default-safe PHP XML parsing, a constant filesystem path, and a constant host
+    with a user-supplied query string."""
+    score = run_corpus_benchmark("signetry-core", signetry_corpus_adapter())
+    for cid in ("LANG-55-SAFE-php-xml-default", "LANG-58-SAFE-go-constant-path",
+                "LANG-60-SAFE-go-constant-url"):
+        c = next(x for x in score.cases if x.case_id == cid)
+        assert c.false_positives == 0, f"false positive on {cid}"
+
+
+def test_pinned_real_repo_cases_exist_and_are_pinned():
+    from signetry_eval.detection.real_repos import REAL_REPO_CASES
+
+    pinned = {c.id: c for c in REAL_REPO_CASES if c.commit}
+    assert {"REAL-webgoat", "REAL-railsgoat"} <= set(pinned)
+    for c in pinned.values():
+        assert len(c.commit) == 40, f"{c.id}: pin must be a full 40-char SHA"
+        assert c.provenance and len(c.provenance) > 20
+    # These are the first JVM/Ruby real-repo targets.
+    langs = {lang for c in REAL_REPO_CASES for lang in c.languages}
+    assert {"java", "ruby"} <= langs

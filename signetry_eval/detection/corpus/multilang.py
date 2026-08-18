@@ -254,4 +254,180 @@ public class SafeDao {
 '''},
         expected=[],  # SAFE
     ),
+
+    # --- OWASP breadth: XXE, path traversal, SSRF (Signetry/eval#11, #12, #29) ---
+    Case(
+        id="LANG-53-java-xxe",
+        family=Family.MULTILANG,
+        language="java",
+        title="Java: XML parsed with a default DocumentBuilderFactory (XXE)",
+        provenance="OWASP A05:2021 Security Misconfiguration; CWE-611. Pattern per the "
+                   "OWASP XXE Prevention cheat sheet: the JAXP default factory resolves "
+                   "external entities unless DOCTYPE processing is explicitly disabled.",
+        files={"XmlLoader.java": '''\
+import javax.xml.parsers.DocumentBuilderFactory;
+import org.xml.sax.InputSource;
+import java.io.StringReader;
+
+public class XmlLoader {
+    public void load(String xml) throws Exception {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        factory.newDocumentBuilder().parse(new InputSource(new StringReader(xml)));
+    }
+}
+'''},
+        expected=[ExpectedFinding("CWE-611", "xxe", "XmlLoader.java")],
+    ),
+    Case(
+        id="LANG-54-php-xxe",
+        family=Family.MULTILANG,
+        language="php",
+        title="PHP: loadXML with LIBXML_NOENT|LIBXML_DTDLOAD (XXE)",
+        provenance="OWASP A05:2021; CWE-611. Since PHP 8 / libxml 2.9 external entities "
+                   "are off by default, so the vulnerable pattern is code that explicitly "
+                   "re-enables them via LIBXML_NOENT / LIBXML_DTDLOAD.",
+        files={"import.php": '''\
+<?php
+$xml = $_POST["payload"];
+$doc = new DOMDocument();
+$doc->loadXML($xml, LIBXML_NOENT | LIBXML_DTDLOAD);
+echo $doc->saveXML();
+'''},
+        expected=[ExpectedFinding("CWE-611", "xxe", "import.php")],
+    ),
+    Case(
+        id="LANG-55-SAFE-php-xml-default",
+        family=Family.MULTILANG,
+        language="php",
+        title="SAFE: PHP loadXML without entity flags (default-safe on modern PHP)",
+        provenance="Crafted SAFE decoy: parsing untrusted XML is not itself XXE on PHP 8+ "
+                   "(entities off by default) — probes whether the rule keys on the flag "
+                   "rather than on 'parses XML'.",
+        files={"safe_import.php": '''\
+<?php
+$xml = $_POST["payload"];
+$doc = new DOMDocument();
+$doc->loadXML($xml);
+echo $doc->saveXML();
+'''},
+        expected=[],  # SAFE
+    ),
+    Case(
+        id="LANG-56-go-path-traversal",
+        family=Family.MULTILANG,
+        language="go",
+        title="Go: file path built from a query parameter (traversal)",
+        provenance="OWASP A01:2021 Broken Access Control; CWE-22. Unconfined path join "
+                   "from a request parameter, per the OWASP Path Traversal description.",
+        files={"files.go": '''\
+package main
+
+import (
+    "net/http"
+    "os"
+)
+
+func download(w http.ResponseWriter, r *http.Request) {
+    name := r.URL.Query().Get("file")
+    data, err := os.ReadFile("/var/data/" + name)
+    if err != nil {
+        http.Error(w, "not found", 404)
+        return
+    }
+    w.Write(data)
+}
+'''},
+        expected=[ExpectedFinding("CWE-22", "path_traversal", "files.go")],
+    ),
+    Case(
+        id="LANG-57-java-path-traversal",
+        family=Family.MULTILANG,
+        language="java",
+        title="Java: FileInputStream opened on a request parameter (traversal)",
+        provenance="OWASP A01:2021; CWE-22. Servlet parameter concatenated into a "
+                   "filesystem path with no canonicalisation or base-dir confinement.",
+        files={"Download.java": '''\
+import javax.servlet.http.HttpServletRequest;
+
+public class Download {
+    public void send(HttpServletRequest req) throws Exception {
+        String name = req.getParameter("file");
+        java.io.FileInputStream in = new java.io.FileInputStream("/var/data/" + name);
+        in.close();
+    }
+}
+'''},
+        expected=[ExpectedFinding("CWE-22", "path_traversal", "Download.java")],
+    ),
+    Case(
+        id="LANG-58-SAFE-go-constant-path",
+        family=Family.MULTILANG,
+        language="go",
+        title="SAFE: Go reads a compiled-in constant path",
+        provenance="Crafted SAFE decoy: a constant filesystem path is not traversal "
+                   "(false-positive probe for the traversal sink).",
+        files={"config.go": '''\
+package main
+
+import "os"
+
+func loadConfig() ([]byte, error) {
+    return os.ReadFile("/etc/app/config.yaml")
+}
+'''},
+        expected=[],  # SAFE
+    ),
+    Case(
+        id="LANG-59-go-ssrf",
+        family=Family.MULTILANG,
+        language="go",
+        title="Go: outbound HTTP request to a user-controlled URL (SSRF)",
+        provenance="OWASP A10:2021 Server-Side Request Forgery; CWE-918. A fetch-by-URL "
+                   "handler forwards a request parameter straight to http.Get, reaching "
+                   "internal services and cloud metadata endpoints.",
+        files={"proxy.go": '''\
+package main
+
+import (
+    "io"
+    "net/http"
+)
+
+func fetch(w http.ResponseWriter, r *http.Request) {
+    target := r.URL.Query().Get("url")
+    resp, err := http.Get(target)
+    if err != nil {
+        http.Error(w, "fetch failed", 502)
+        return
+    }
+    defer resp.Body.Close()
+    io.Copy(w, resp.Body)
+}
+'''},
+        expected=[ExpectedFinding("CWE-918", "ssrf", "proxy.go")],
+    ),
+    Case(
+        id="LANG-60-SAFE-go-constant-url",
+        family=Family.MULTILANG,
+        language="go",
+        title="SAFE: Go fetches a constant URL with a user-supplied query string",
+        provenance="Crafted SAFE decoy: the destination host is compiled in and only the "
+                   "query string is user-controlled — not SSRF. Probes the same "
+                   "constant-URL-with-tainted-parameters distinction that the Python SSRF "
+                   "rule is measured on.",
+        files={"client.go": '''\
+package main
+
+import (
+    "net/http"
+    "net/url"
+)
+
+func search(r *http.Request) (*http.Response, error) {
+    q := r.URL.Query().Get("q")
+    return http.Get("https://api.example.com/search?q=" + url.QueryEscape(q))
+}
+'''},
+        expected=[],  # SAFE
+    ),
 ]

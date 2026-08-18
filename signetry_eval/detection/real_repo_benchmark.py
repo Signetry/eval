@@ -40,6 +40,31 @@ def _git_available() -> bool:
         return False
 
 
+def _checkout_pinned(root: Path, commit: str) -> str:
+    """Check out a pinned commit in a (possibly shallow) clone.
+
+    ``resolve_scan_target`` clones with ``--depth 1``, so the pinned object is not
+    present and a plain ``git checkout <sha>`` fails. Previously that failure was
+    swallowed (``check=False``) and the scan silently ran against the default-branch
+    tip — so a "pinned for reproducibility" case was not actually pinned.
+
+    Fetch the specific object first (GitHub permits fetching an arbitrary SHA), and
+    if pinning genuinely cannot be honoured, say so in the note rather than
+    reporting an unpinned scan as pinned.
+    """
+    fetched = subprocess.run(
+        ["git", "fetch", "--quiet", "--depth", "1", "origin", commit],
+        cwd=root, capture_output=True, check=False,
+    )
+    ref = "FETCH_HEAD" if fetched.returncode == 0 else commit
+    checked = subprocess.run(
+        ["git", "checkout", "-q", ref], cwd=root, capture_output=True, check=False,
+    )
+    if checked.returncode != 0:
+        return f"NOT pinned (commit {commit[:12]} unreachable; scanned default branch)"
+    return f"pinned @ {commit[:12]}"
+
+
 def scan_real_repo(case: RealRepoCase, *, use_semgrep: bool = False, depth: int = 1) -> RealRepoResult:
     """Clone + scan one real repo. Returns a result; never raises (records notes)."""
     from signetry_core import scan_repository
@@ -47,22 +72,25 @@ def scan_real_repo(case: RealRepoCase, *, use_semgrep: bool = False, depth: int 
 
     if not _git_available():
         return RealRepoResult(case.id, case.url, ran=False, note="git unavailable")
+    pin_note = ""
     try:
         with resolve_scan_target(case.url, depth=depth) as root:
             root = Path(root)
             if case.commit:
-                subprocess.run(["git", "checkout", "-q", case.commit], cwd=root,
-                               capture_output=True, check=False)
+                pin_note = _checkout_pinned(root, case.commit)
             report = scan_repository(root, use_semgrep=use_semgrep)
     except RuntimeError as exc:
         return RealRepoResult(case.id, case.url, ran=False, note=f"clone/scan failed: {exc}")
     by_cat: dict[str, int] = {}
     for f in report.findings:
         by_cat[f.category] = by_cat.get(f.category, 0) + 1
+    note = f"layers: {', '.join(report.layers)}"
+    if pin_note:
+        note = f"{pin_note} · {note}"
     return RealRepoResult(
         case.id, case.url, ran=True, files_scanned=report.files_scanned,
         total_findings=len(report.findings), by_category=by_cat,
-        note=f"layers: {', '.join(report.layers)}",
+        note=note,
     )
 
 

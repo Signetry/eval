@@ -5,6 +5,38 @@ Until `1.0.0` the public API may change between minor versions.
 
 ## [Unreleased]
 
+### Added — OWASP breadth in the detection corpus (52 → 60 cases)
+
+- **XXE (CWE-611)** in Java and PHP — `LANG-53`, `LANG-54` (eval#11).
+- **Path traversal (CWE-22)** in Go and Java — `LANG-56`, `LANG-57` (eval#12).
+- **SSRF (CWE-918)** in Go — `LANG-59` (eval#29), giving the class a second
+  language alongside Python.
+- Three SAFE decoys probing the precision distinctions these rules must make:
+  default-safe PHP XML parsing (entities are off by default on PHP 8+), a constant
+  filesystem path, and a **constant host with a user-supplied query string**
+  (`LANG-55`, `LANG-58`, `LANG-60`).
+- Two **pinned** real-repo cases — OWASP WebGoat (Java) and OWASP RailsGoat
+  (Ruby), the first JVM/Ruby targets here; every prior case is Python or
+  JavaScript (eval#13).
+
+The `LANG-60` decoy earned its keep immediately: it caught a false positive in
+signetry-core's new Go SSRF rule, fixed in Signetry/core#97 before this landed.
+
+### Fixed — pinned real-repo cases were not actually pinned
+
+- `scan_real_repo` cloned with `--depth 1` and then ran `git checkout <sha>` with
+  `check=False`. On a shallow clone the object is absent, so the checkout failed
+  (`fatal: unable to read tree`), the failure was swallowed, and the scan silently
+  ran against the **default-branch tip** — a case documented as "pinned for
+  reproducibility" was not pinned. Now fetches the specific object first, and if
+  pinning genuinely cannot be honoured it says so in the result note rather than
+  reporting an unpinned scan as pinned.
+
+### Changed
+
+- Pin `signetry-core` at `v0.7.0`; the corpus additions above depend on its new
+  Go SSRF / Go+Java path-traversal / PHP XXE rules.
+
 ### Changed — Signetry rename (breaking)
 
 - Distribution `signetry-eval` and import package `signetry_eval`. The console

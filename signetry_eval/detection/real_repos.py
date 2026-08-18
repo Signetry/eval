@@ -77,4 +77,29 @@ REAL_REPO_CASES: list[RealRepoCase] = [
                    "Large; scanned shallowly. Expected: assorted JS/TS sinks.",
         expect_at_least=[],
     ),
+    # The cases above pin no commit, so they drift with their default branch. The two
+    # below are pinned, and are the first JVM/Ruby targets here — every case above is
+    # Python or JavaScript, which under-exercises the multi-language tier.
+    RealRepoCase(
+        id="REAL-webgoat",
+        url="https://github.com/WebGoat/WebGoat.git",
+        commit="7517acca95d9851da706452454c223dd13545ef4",
+        languages=["java"],
+        provenance="OWASP WebGoat — the reference deliberately-insecure Java teaching "
+                   "app, maintained by OWASP. Pinned for reproducibility. Exercises the "
+                   "Java tier (JDBC concatenation, XXE, native deserialization, path "
+                   "traversal) that no other real-repo case here reaches.",
+        expect_at_least=[],  # reported, not asserted (see the module docstring)
+    ),
+    RealRepoCase(
+        id="REAL-railsgoat",
+        url="https://github.com/OWASP/railsgoat.git",
+        commit="0222f7da3406ba3ab637bc6d24ae9366b5f0a680",
+        languages=["ruby"],
+        provenance="OWASP RailsGoat — deliberately vulnerable Rails app covering the "
+                   "OWASP Top 10. Pinned for reproducibility. First Ruby target here, so "
+                   "it exercises the Ruby rules (interpolated SQL/command, YAML/Marshal "
+                   "load) against real application code rather than snippets.",
+        expect_at_least=[],
+    ),
 ]
