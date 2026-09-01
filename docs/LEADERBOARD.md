@@ -25,7 +25,7 @@ by blocking everything is not a win.
 
 | System | Evidence | Attacks | ASR ungoverned | ASR governed | Reduction | Utility preserved |
 |---|:---:|:---:|:---:|:---:|:---:|:---:|
-| [signetry-core](https://github.com/Signetry/core) | reproduced here | 5 | 100% | 0% | 100% | 100% |
+| [signetry-core `0.7.0`](https://github.com/Signetry/core) | reproduced here | 5 | 100% | 0% | 100% | 100% |
 | ungoverned agent (no checkpoint) | reproduced here | 5 | 100% | 100% | 0% | — |
 
 ### What the governed column does and does not claim

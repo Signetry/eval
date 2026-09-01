@@ -65,14 +65,29 @@ jobs:
       - name: Regenerate the leaderboard
         run: |
           mkdir -p docs
+          # Record WHICH signetry-core produced the live row. A leaderboard that says
+          # "measured live in CI" without naming the version measured cannot be
+          # reproduced by a reader, which is the one thing it exists to support.
+          # Read from the installed package, never hardcoded — a stale label would be
+          # worse than the null it replaces. Left unset if it cannot be read, so the
+          # row degrades to "not measured" rather than to a guess.
+          CORE_VERSION="$(python -c 'import signetry_core; print(signetry_core.__version__)' 2>/dev/null || true)"
+          if [ -n "$CORE_VERSION" ]; then
+            VERSION_ARG="--version $CORE_VERSION"
+            echo "live row labelled signetry-core $CORE_VERSION"
+          else
+            VERSION_ARG=""
+            echo "::warning::could not read signetry_core.__version__; the live row will be unlabelled."
+          fi
+
           # Runs the adversarial suite for the live signetry-core row. A failing defense
           # still publishes — the row shows the failure. The gate below is what fails.
           if [ "${{ steps.engine.outputs.available }}" = "true" ]; then
-            signetry-eval leaderboard --with-detection > docs/LEADERBOARD.md
-            signetry-eval leaderboard --with-detection --json > docs/LEADERBOARD.json
+            signetry-eval leaderboard --with-detection $VERSION_ARG > docs/LEADERBOARD.md
+            signetry-eval leaderboard --with-detection $VERSION_ARG --json > docs/LEADERBOARD.json
           else
-            signetry-eval leaderboard > docs/LEADERBOARD.md
-            signetry-eval leaderboard --json > docs/LEADERBOARD.json
+            signetry-eval leaderboard $VERSION_ARG > docs/LEADERBOARD.md
+            signetry-eval leaderboard $VERSION_ARG --json > docs/LEADERBOARD.json
           fi
 
       - uses: actions/upload-artifact@v7

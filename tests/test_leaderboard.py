@@ -160,6 +160,30 @@ def test_every_rate_is_printed_with_its_sample_size():
         "the row shows rates without the scenario count they were computed over"
 
 
+def test_the_live_row_is_labelled_with_the_version_measured():
+    """A leaderboard that says "measured live in CI" without naming the version measured
+    cannot be reproduced by a reader, which is the one thing it exists to support. CI
+    reads the label from the installed package and passes it through."""
+    report = run_all(None)
+    page = render_leaderboard(report, version="9.9.9")
+    row = next(ln for ln in page.split("\n") if "signetry-core" in ln and "|" in ln)
+    assert "9.9.9" in row
+
+    payload = leaderboard_json(report, version="9.9.9")
+    assert payload["governance"]["measured_here"]["version"] == "9.9.9"
+
+
+def test_an_unknown_version_stays_unmeasured_rather_than_guessed():
+    """If the version cannot be read, the field must degrade to null. A stale or invented
+    label would be worse than the absence it replaces — same rule as every rate here."""
+    report = run_all(None)
+    assert entry_from_report(report).version is None
+    assert leaderboard_json(report)["governance"]["measured_here"]["version"] is None
+    row = next(ln for ln in render_leaderboard(report).split("\n")
+               if "signetry-core" in ln and "|" in ln)
+    assert "`" not in row, "an absent version rendered as an empty backtick label"
+
+
 def test_the_page_states_its_own_sample_size_in_prose():
     page = render_leaderboard(run_all(None))
     assert "scenarios" in page

@@ -6,7 +6,7 @@
       "name": "signetry-core",
       "status": "reproduced",
       "url": "https://github.com/Signetry/core",
-      "version": null,
+      "version": "0.7.0",
       "attacks_run": 5,
       "asr_ungoverned": 1.0,
       "asr_governed": 0.0,
