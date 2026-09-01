@@ -5,6 +5,30 @@ Until `1.0.0` the public API may change between minor versions.
 
 ## [Unreleased]
 
+### Changed — Signetry is now open core; this repo is Apache-2.0
+
+- An [Apache-2.0](LICENSE) **LICENSE** file is now present, replacing the previous
+  "All Rights Reserved" terms, as part of Signetry's
+  [open-core model](https://github.com/Signetry/signetry/blob/main/LICENSING.md). The
+  engine ([`Signetry/core`](https://github.com/Signetry/core)) is source-available under
+  BUSL-1.1 and converts to Apache-2.0 on 2030-08-31.
+- **This repository has no strings deliberately.** A benchmark nobody can freely run,
+  audit, and reproduce is worthless as evidence, so the eval suite carries the most
+  permissive licence of anything in the platform — fork it, re-run it, publish results
+  that disagree with ours.
+- `pyproject.toml` declares `license = "Apache-2.0"` and the OSI Apache classifier,
+  replacing `Proprietary — All Rights Reserved`.
+- The all-rights-reserved framing is gone from `README.md`, `CONTRIBUTING.md`,
+  `CLA.md`, `CONTRIBUTORS.md`, and the CLA workflow's PR comment.
+- **The CLA is kept**, and its fallback licence grant is now **non-exclusive** so a
+  contributor never loses the right to use their own contribution. See
+  [CLA.md](CLA.md) §2–3.
+
+### Added — community health files
+
+- `SECURITY.md`, `CODE_OF_CONDUCT.md` (Contributor Covenant v2.1), and GitHub issue
+  templates.
+
 ### Added — OWASP breadth in the detection corpus (52 → 60 cases)
 
 - **XXE (CWE-611)** in Java and PHP — `LANG-53`, `LANG-54` (eval#11).

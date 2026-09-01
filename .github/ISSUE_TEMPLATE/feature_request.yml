@@ -1,0 +1,43 @@
+name: Feature request
+description: Suggest an improvement to the Codex integration
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This repository is Apache-2.0 and contributions are welcome — see
+        [CONTRIBUTING.md](https://github.com/Signetry/eval/blob/main/CONTRIBUTING.md).
+
+        Scope check: this repo wires Codex to the engine. It **never reimplements
+        policy** and never auto-merges. Requests to change how contracts are
+        evaluated, how receipts are signed, or what the guard decides belong in
+        [signetry-core](https://github.com/Signetry/core).
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: The problem
+      description: What are you trying to do that this integration makes hard or impossible today?
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed change
+      description: What should the integration do instead? Config snippets welcome.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Workarounds you tried, and why they were not enough.
+
+  - type: checkboxes
+    id: contribute
+    attributes:
+      label: Would you like to implement this?
+      options:
+        - label: I'm willing to open a pull request (I'll sign the CLA).

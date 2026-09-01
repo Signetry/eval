@@ -2,18 +2,14 @@
 
 # signetry-eval
 
-> **Copyright (c) 2026 Binay Dalai. All rights reserved.**
-> This repository is strictly for viewing and contributing to the original project. You may not use, copy, modify, distribute, or commercialize this code for your own personal or commercial projects without explicit written permission. Only the original author retains the right to use and monetize this project.
-
-
 **The public adversarial evaluation suite for [Signetry](https://github.com/Signetry/signetry).**
 
 Measures **attack success rate (ASR)** and **utility-under-defense** for coding-agent
 threats — governed by the same [`signetry-core`](https://github.com/Signetry/core)
 pipeline production uses.
 
-[![Source-available](https://img.shields.io/badge/source-available-informational.svg)](CLA.md)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome%20(CLA)-brightgreen.svg)](https://github.com/Signetry/signetry/issues/10)
+[![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome%20(CLA)-brightgreen.svg)](CONTRIBUTING.md)
 
 </div>
 
@@ -125,7 +121,9 @@ print(report.overall())          # asr_ungoverned, asr_governed, utility_governe
 
 ## Contributing
 
-**Source-available, PRs welcome** (not open source; All Rights Reserved). Contribute under the [CLA](CLA.md) — you're **credited** ([CONTRIBUTORS.md](CONTRIBUTORS.md)) but gain no ownership or right to use/sell it. Start at the [good-first-issues board](https://github.com/Signetry/signetry/issues/10). The best contribution is **a new test case**. Add a detection
+**Apache-2.0, PRs welcome.** Contribute under the [CLA](CLA.md) — it lets a well-built
+case or adapter move across the open-core line later — and you're **credited** in
+[CONTRIBUTORS.md](CONTRIBUTORS.md). Start at the [good-first-issues board](https://github.com/Signetry/signetry/issues/10). The best contribution is **a new test case**. Add a detection
 **corpus case** (`signetry_eval/detection/corpus/`, with a cited `provenance`; SAFE
 decoys must stay 0 false positives) or an **adversarial scenario**
 (`signetry_eval/scenarios/`). See [CONTRIBUTING.md](CONTRIBUTING.md) and
@@ -136,4 +134,12 @@ Part of the Signetry platform — see the [umbrella overview](https://github.com
 
 ## License
 
-**Copyright (c) 2026 Binay Dalai. All rights reserved.** This code is not open source. You may not use, copy, modify, distribute, or commercialize it for your own personal or commercial purposes without explicit written permission from the author, who alone retains the right to use and monetize this project. See [CONTRIBUTING.md](CONTRIBUTING.md).
+[Apache-2.0](LICENSE). Use it, fork it, ship it commercially — no strings.
+
+This repository is part of Signetry's [open-core model](https://github.com/Signetry/signetry/blob/main/LICENSING.md):
+the **integration surface is Apache-2.0** so anyone can add an agent, an editor, or a
+CI adapter, while the engine ([`Signetry/core`](https://github.com/Signetry/core)) is
+source-available under BUSL-1.1 and converts to Apache-2.0 on 2030-08-31.
+
+Contributions are accepted under the [CLA](CLA.md) — it lets us move a well-built
+adapter into the engine later without asking every contributor for permission again.

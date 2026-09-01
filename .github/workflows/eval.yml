@@ -19,7 +19,8 @@ jobs:
       - name: Install
         run: |
           # signetry-core is installed from its source repo (a git+https dependency in
-          # pyproject.toml); it is All Rights Reserved and not on PyPI.
+          # pyproject.toml); it is source-available under BUSL-1.1 and not on PyPI.
+          # This repo (signetry-eval) is Apache-2.0.
           pip install -e ".[dev]"
       - name: Ruff
         run: ruff check signetry_eval/ tests/
