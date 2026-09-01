@@ -35,7 +35,7 @@ jobs:
           python-version: "3.12"
       - name: Install signetry-reviewer
         # signetry-reviewer is not published on PyPI; install it from its source repo.
-        run: pip install "signetry-reviewer @ git+https://github.com/Signetry/reviewer@v0.2.0"
+        run: pip install "signetry-reviewer @ git+https://github.com/Signetry/reviewer@v0.3.0"
       - name: Compute the PR diff
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
