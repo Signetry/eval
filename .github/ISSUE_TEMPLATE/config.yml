@@ -1,0 +1,13 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Governance engine (signetry-core)
+    url: https://github.com/Signetry/core/issues
+    about: >
+      Contract evaluation, guard decisions, the verifier, receipts, and scanning live
+      in the engine. File engine behaviour there, not here.
+  - name: Signetry platform overview
+    url: https://github.com/Signetry/signetry
+    about: How the integrations, the engine, and the CI action fit together.
+  - name: Report a security vulnerability (private)
+    url: https://github.com/Signetry/eval/security/advisories/new
+    about: Signetry is a security tool. Please report privately, never in a public issue.

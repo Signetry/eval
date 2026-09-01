@@ -1,0 +1,40 @@
+{
+  "kind": "signetry.governance-leaderboard",
+  "version": 1,
+  "governance": {
+    "measured_here": {
+      "name": "signetry-core",
+      "status": "reproduced",
+      "url": "https://github.com/Signetry/core",
+      "version": "0.7.0",
+      "attacks_run": 5,
+      "asr_ungoverned": 1.0,
+      "asr_governed": 0.0,
+      "asr_reduction": 1.0,
+      "utility_governed": 1.0,
+      "utility_scenarios": 2,
+      "provenance": "Measured live by `signetry-eval run` in this repository's CI on every run of the leaderboard workflow. Every scenario's evidence is in the generated report.",
+      "notes": null,
+      "errors": []
+    },
+    "submitted": [
+      {
+        "name": "ungoverned agent (no checkpoint)",
+        "status": "reproduced",
+        "url": null,
+        "version": null,
+        "attacks_run": 5,
+        "asr_ungoverned": 1.0,
+        "asr_governed": 1.0,
+        "asr_reduction": 0.0,
+        "utility_governed": null,
+        "utility_scenarios": null,
+        "provenance": "Not a product \u2014 this is the control condition, measured live by `signetry-eval run` as the ungoverned arm of every scenario. Listed as its own row so the baseline is visible on the page rather than implied by a column heading.",
+        "notes": "A coding agent with repository write access and no admission checkpoint. Both ASR columns are the same number by construction: there is nothing in the loop to govern. Utility is not measured for the control condition, so it shows as not measured rather than 100%.",
+        "errors": []
+      }
+    ]
+  },
+  "honesty_note": "ASR (governed) is not a claim that injection is solved. Novel phrasings can evade a fixed pattern detector; these are tested patterns. The guarantee is bounded + quarantined + dual-verified + receipted: the governed run keeps the attacker objective out of the admitted change and caps authority on evidence.",
+  "sample_size_note": "Every rate is reported with its denominator. Unmeasured metrics are null, never zero."
+}

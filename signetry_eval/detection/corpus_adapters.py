@@ -4,9 +4,13 @@
 - ``captured_corpus_adapter`` replays a competitor's captured findings, keyed by
   case id, from a single JSON capture file of the shape:
       {"CASE-ID": {"findings": [{"file": ..., "category": ...}, ...]}, ...}
-  A case absent from the capture yields no findings for that case (recorded as a
-  miss, never fabricated). If the whole capture is missing, the scanner is
-  reported as not-run by the caller.
+  A case **absent** from the capture returns ``ran=False`` for that case, and the
+  scorer drops it from that scanner's denominator. It is not a miss: the scanner
+  was never given the case. Captures are taken at a point in time and the corpus
+  grows, so charging a scanner for cases added after its capture would report a
+  red on evidence that does not exist — the same rule that shows an entirely
+  unrun scanner as ``not run`` rather than zero, applied per case.
+  An entry that IS present but lists no findings is a genuine miss.
 """
 from __future__ import annotations
 
@@ -45,6 +49,11 @@ def load_capture(capture_path: str | Path) -> dict:
 
 def captured_corpus_adapter(capture: dict) -> CorpusAdapter:
     def _run(case: Case, _root: Path) -> ScannerResult:
+        if case.id not in capture:
+            # Not covered by this capture. ran=False tells the scorer to exclude the
+            # case rather than charge the scanner with missing it.
+            return ScannerResult(name="captured", ran=False,
+                                 note=f"{case.id} is not in this capture")
         entry = capture.get(case.id) or {}
         items = entry.get("findings", []) if isinstance(entry, dict) else []
         findings = [

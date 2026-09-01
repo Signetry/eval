@@ -1,0 +1,71 @@
+name: Bug report
+description: Something in the Codex integration behaves incorrectly
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the report. This repository is the **Codex integration surface**
+        (MCP server wiring, the `signetry guard` lifecycle hook, `config.toml`).
+        Governance logic — contract evaluation, guard decisions, the verifier, receipts —
+        lives in [signetry-core](https://github.com/Signetry/core); please file those
+        there.
+
+        For a **security vulnerability**, do not open an issue: use
+        [private vulnerability reporting](https://github.com/Signetry/eval/security/advisories/new)
+        instead. See [SECURITY.md](https://github.com/Signetry/eval/blob/main/SECURITY.md).
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: What you saw, and what you expected instead.
+    validations:
+      required: true
+
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      description: The smallest sequence that shows the problem.
+      placeholder: |
+        1. Wired the MCP server into ~/.codex/config.toml as documented
+        2. Asked Codex to ...
+        3. Observed ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: config
+    attributes:
+      label: Relevant config
+      description: >
+        Your `~/.codex/config.toml` Signetry block and/or `.signetry/admission.yaml`.
+        Redact anything private — never paste an API key.
+      render: toml
+
+  - type: textarea
+    id: output
+    attributes:
+      label: Command output
+      description: >
+        Output from the failing command (e.g. `signetry guard ...`), or the Codex
+        transcript around the failure.
+      render: shell
+
+  - type: input
+    id: core-version
+    attributes:
+      label: signetry-core version
+      description: The pin you installed (e.g. `v0.7.0`), or the output of `signetry --version`.
+    validations:
+      required: true
+
+  - type: input
+    id: env
+    attributes:
+      label: Environment
+      description: OS, Python version, Codex version.
+      placeholder: macOS 15.3, Python 3.12.4, Codex CLI 0.x
+    validations:
+      required: true
