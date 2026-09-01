@@ -3,7 +3,7 @@
 Follows [Keep a Changelog](https://keepachangelog.com/) / [SemVer](https://semver.org/).
 Until `1.0.0` the public API may change between minor versions.
 
-## [Unreleased]
+## [0.3.0] — 2026-09-01
 
 ### Added — the Agent Governance Leaderboard
 

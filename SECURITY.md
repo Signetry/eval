@@ -14,8 +14,8 @@ Always run the latest — the corpus and the pinned `signetry-core` move togethe
 
 | Version | Supported |
 |---|---|
-| `0.2.3` | ✅ current — 7-language detection corpus, pinned real-repo cases, `signetry-core` `v0.7.0` |
-| `0.2.0`–`0.2.2` | ⚠️ superseded — the "pinned" real-repo cases were silently scanning the default-branch tip (see `CHANGELOG.md`) |
+| `0.3.0` | ✅ current — the governance leaderboard, 60-case OWASP corpus, `signetry-core` `v0.8.0` |
+| `0.2.0`–`0.2.3` | ⚠️ superseded — the "pinned" real-repo cases were silently scanning the default-branch tip (see `CHANGELOG.md`) |
 | `< 0.2.0` | ❌ upgrade |
 
 ## Reporting a vulnerability

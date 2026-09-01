@@ -57,7 +57,7 @@ body:
     id: core-version
     attributes:
       label: signetry-core version
-      description: The pin you installed (e.g. `v0.7.0`), or the output of `signetry --version`.
+      description: The pin you installed (e.g. `v0.8.0`), or the output of `signetry --version`.
     validations:
       required: true
 

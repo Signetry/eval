@@ -308,8 +308,8 @@ wheels = [
 
 [[package]]
 name = "signetry-core"
-version = "0.7.0"
-source = { git = "https://github.com/Signetry/core?rev=v0.7.0#0d39eb34f32152f5a3015ce9282245e38c25d9fc" }
+version = "0.8.0"
+source = { git = "https://github.com/Signetry/core?rev=v0.8.0#ee974f324aca0fd35726569d4a1c4f55a5a75a2e" }
 dependencies = [
     { name = "cryptography" },
     { name = "pyyaml" },
@@ -317,7 +317,7 @@ dependencies = [
 
 [[package]]
 name = "signetry-eval"
-version = "0.2.3"
+version = "0.3.0"
 source = { editable = "." }
 dependencies = [
     { name = "signetry-core" },
@@ -333,6 +333,6 @@ dev = [
 requires-dist = [
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.0.0" },
     { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.6.0" },
-    { name = "signetry-core", git = "https://github.com/Signetry/core?rev=v0.7.0" },
+    { name = "signetry-core", git = "https://github.com/Signetry/core?rev=v0.8.0" },
 ]
 provides-extras = ["dev"]

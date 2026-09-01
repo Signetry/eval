@@ -1,6 +1,6 @@
 [project]
 name = "signetry-eval"
-version = "0.2.3"
+version = "0.3.0"
 description = "The public adversarial evaluation suite for Signetry: measures attack success rate (ASR) and utility-under-defense for coding-agent prompt injection, skill/MCP poisoning, and memory-injection threats, governed by signetry-core."
 readme = "README.md"
 requires-python = ">=3.11"
@@ -22,7 +22,7 @@ classifiers = [
     "Topic :: Software Development :: Quality Assurance",
 ]
 dependencies = [
-    "signetry-core @ git+https://github.com/Signetry/core@v0.7.0",
+    "signetry-core @ git+https://github.com/Signetry/core@v0.8.0",
 ]
 
 [project.urls]
