@@ -248,3 +248,112 @@ def test_pinned_real_repo_cases_exist_and_are_pinned():
     # These are the first JVM/Ruby real-repo targets.
     langs = {lang for c in REAL_REPO_CASES for lang in c.languages}
     assert {"java", "ruby"} <= langs
+
+
+# --- Capture coverage: a case the scanner never saw is not a miss --------------------
+#
+# Captures are point-in-time; this corpus grows. Scoring a competitor against cases
+# added after its capture was taken reports a red on evidence that does not exist —
+# and does so against a named tool. These tests keep the denominator honest.
+
+
+def _claude(scores):
+    return next(s for s in scores if s.name == "claude-code-security-review")
+
+
+def test_a_case_outside_the_capture_is_excluded_not_counted_as_a_miss():
+    claude = _claude(run_corpus_head_to_head())
+    uncovered = {c.case_id for c in claude.uncovered_cases}
+    assert uncovered, "expected the committed capture to predate part of the corpus"
+
+    # Not one of the uncovered cases may contribute to the recall denominator.
+    scored = {c.case_id for c in claude.covered_cases}
+    assert not (scored & uncovered)
+    assert claude.expected_total == sum(c.expected for c in claude.covered_cases)
+
+    # And none of them may show up as a missed category.
+    for case in claude.cases:
+        if case.case_id in uncovered:
+            assert case.missed_categories == [], (
+                f"{case.case_id}: charged with a miss on a case the scanner never ran"
+            )
+
+
+def test_recall_is_computed_over_covered_cases_only():
+    claude = _claude(run_corpus_head_to_head())
+    charged_if_naive = sum(
+        len(c.expected) for c in ALL_CASES
+        if c.id in {u.case_id for u in claude.uncovered_cases}
+    )
+    assert charged_if_naive > 0, "no uncovered vulnerable case — this test proves nothing"
+
+    naive = claude.detected_total / (claude.expected_total + charged_if_naive)
+    assert claude.recall > naive, (
+        "recall still includes cases the scanner was never run on: "
+        f"{claude.recall} vs naive {naive}"
+    )
+
+
+def test_the_uncovered_cases_are_disclosed_not_hidden():
+    # Excluding them silently would be its own dishonesty — the reader has to be able
+    # to see that the two scanners were scored over different case sets.
+    scores = run_corpus_head_to_head()
+    md = render_markdown(scores)
+    assert "Cases scored" in md, "the per-scanner denominator is not in the table"
+    for case in _claude(scores).uncovered_cases:
+        assert case.case_id in md, f"{case.case_id} excluded from scoring but not disclosed"
+    assert "never run on them" in md
+
+
+def test_signetry_is_scored_over_the_whole_corpus():
+    # signetry-core runs live, so it has no capture and no excuse: full coverage.
+    scores = run_corpus_head_to_head()
+    signetry = next(s for s in scores if s.name == "signetry-core")
+    assert signetry.uncovered_cases == []
+    assert len(signetry.covered_cases) == len(ALL_CASES)
+
+
+def test_a_present_but_empty_capture_entry_is_still_a_miss():
+    # The distinction that makes this safe: absent means "not run", present-with-no-
+    # findings means "ran and found nothing". Only the first is excused.
+    from signetry_eval.detection.corpus_adapters import captured_corpus_adapter
+
+    vulnerable = next(c for c in ALL_CASES if not c.is_safe and c.expected)
+    adapter = captured_corpus_adapter({vulnerable.id: {"findings": []}})
+    score = run_corpus_benchmark("empty-entry", adapter, note="test")
+    target = next(c for c in score.cases if c.case_id == vulnerable.id)
+    assert target.covered is True, "a present entry must be scored"
+    assert target.missed_categories, "an empty findings list is a genuine miss"
+    # Every other case is absent from this capture, so all of them are excluded.
+    assert len(score.covered_cases) == 1
+    assert score.recall == 0.0, "a scanner that ran and found nothing scores 0%, not —"
+
+
+def test_a_scanner_with_no_covered_cases_has_no_recall():
+    from signetry_eval.detection.corpus_adapters import captured_corpus_adapter
+
+    score = run_corpus_benchmark("covers-nothing", captured_corpus_adapter({}), note="test")
+    assert score.covered_cases == []
+    assert score.recall is None, "an unmeasured recall must be None, never 0.0"
+    assert score.expected_total == 0
+
+
+def test_by_language_excludes_uncovered_cases():
+    claude = _claude(run_corpus_head_to_head())
+    bl = claude.by_language()
+    covered_by_lang: dict[str, int] = {}
+    for c in claude.covered_cases:
+        covered_by_lang[c.language] = covered_by_lang.get(c.language, 0) + c.expected
+    for lang, bucket in bl.items():
+        assert bucket["expected"] == covered_by_lang.get(lang, 0), (
+            f"{lang}: by-language denominator includes uncovered cases"
+        )
+
+
+def test_the_json_output_names_what_was_not_covered():
+    claude = _claude(run_corpus_head_to_head())
+    public = claude.to_public()
+    assert public["cases"] == len(claude.covered_cases)
+    assert public["cases_in_corpus"] == len(ALL_CASES)
+    assert set(public["cases_not_covered"]) == {c.case_id for c in claude.uncovered_cases}
+    assert all(c["covered"] is not None for c in public["per_case"])

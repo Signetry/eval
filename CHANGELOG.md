@@ -5,6 +5,28 @@ Until `1.0.0` the public API may change between minor versions.
 
 ## [Unreleased]
 
+### Fixed — a competitor was scored on cases it was never run on
+
+The corpus benchmark charged a replayed scanner with a **miss** for any case absent from
+its capture. Captures are taken at a point in time and this corpus grows, so the 8 cases
+added in the 52 → 60 expansion were counted as failures for
+`claude-code-security-review` — 5 of them vulnerable. Its published recall read **81%
+(38/47)** when the honest figure over the cases it was actually given is **90%
+(38/42)**.
+
+That is the same defect this suite calls out everywhere else — a score on evidence that
+does not exist — except pointed outward at a named tool, and it inflated our lead by
+about nine points.
+
+- A case absent from a scanner's capture is now `covered=False` and excluded from its
+  recall, false-positive count, and per-family/per-language breakdowns. An entry that is
+  *present* but lists no findings is still a genuine miss; only "never run" is excused.
+- Every table now prints **Cases scored** per scanner, and the excluded case ids are
+  listed under Notes — excluding them silently would be its own dishonesty, since the
+  two scanners are no longer scored over the same set.
+- `CorpusScore.recall` returns `None` rather than `0.0` when nothing was measured, and
+  the `--min-recall` gate now fails on an unmeasured recall instead of passing it.
+
 ### Changed — Signetry is now open core; this repo is Apache-2.0
 
 - An [Apache-2.0](LICENSE) **LICENSE** file is now present, replacing the previous

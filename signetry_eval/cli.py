@@ -100,6 +100,10 @@ def cmd_corpus(args: argparse.Namespace) -> int:
 
     signetry = next((s for s in scores if s.name == "signetry-core"), None)
     if signetry is not None:
+        if signetry.recall is None:
+            # Nothing measured is a failure of the gate, not a pass by default.
+            print("FAIL: Signetry recall was not measured (no covered cases)", file=sys.stderr)
+            return 1
         if signetry.recall < args.min_recall:
             print(f"FAIL: Signetry recall {signetry.recall:.0%} < required {args.min_recall:.0%}",
                   file=sys.stderr)
