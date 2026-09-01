@@ -1,21 +1,46 @@
 name: benchmark
 
-# Regenerate the detection head-to-head table on every release (and on demand),
-# publish it as a release artifact, and commit the refreshed markdown into
-# docs/BENCHMARK.md so the published numbers always match the shipped engine.
+# Regenerates docs/BENCHMARK.md — the detection head-to-head against the other
+# scanners — and publishes it as a release artifact, so the published numbers always
+# match the shipped engine.
+#
+# This workflow owns docs/BENCHMARK.{md,json} and nothing else; the governance
+# leaderboard is owned by leaderboard.yml. Both push to main, so both sit in the
+# `published-numbers` concurrency group.
+#
+# It runs on a schedule as well as on releases: the detection corpus and the competing
+# scanners both change between tags, and a table only refreshed at release time can be
+# months out of date while still reading as current.
 on:
+  schedule:
+    # Mondays 06:47 UTC. Off the hour on purpose (scheduled jobs queued at :00 are
+    # delayed under load) and clear of leaderboard.yml's 07:23 slot.
+    - cron: "47 6 * * 1"
   release:
     types: [published]
+  push:
+    branches: [main]
+    paths:
+      - "signetry_eval/corpus/**"
+      - "signetry_eval/detection.py"
   workflow_dispatch:
 
 permissions:
   contents: write
+
+concurrency:
+  group: published-numbers
+  cancel-in-progress: false
 
 jobs:
   benchmark:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+        with:
+          # Never the incoming ref: on a release event that is the tag, which
+          # leaves us in detached HEAD and turns the push below into a tag write.
+          ref: ${{ github.event.repository.default_branch || 'main' }}
       - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
@@ -23,8 +48,8 @@ jobs:
         run: pip install -e ".[dev]"
       - name: Require the signetry-core detection engine
         run: |
-          # The release benchmark must run against a signetry-core that has the SAST
-          # engine. Fail loudly if it is missing (a real release misconfiguration).
+          # This benchmark has no meaning without the SAST engine, and an absent scanner
+          # must never be published as a zero. Fail rather than emit a table.
           python -c "from signetry_core import scan_repository" || {
             echo "::error::Installed signetry-core lacks scan_repository; pin a signetry-core with the detection engine."
             exit 1
@@ -38,19 +63,26 @@ jobs:
             signetry-eval corpus --markdown
           } > docs/BENCHMARK.md
           signetry-eval corpus --json > docs/BENCHMARK.json
-      - name: Gate on parity (Signetry must keep 100% recall, 0 false positives)
-        run: signetry-eval corpus --min-recall 1.0 --max-fp 0
       - uses: actions/upload-artifact@v7
         with:
           name: detection-benchmark
           path: |
             docs/BENCHMARK.md
             docs/BENCHMARK.json
-      - name: Commit refreshed benchmark (on release)
-        if: github.event_name == 'release'
+          if-no-files-found: error
+      - name: Commit the refreshed benchmark
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add docs/BENCHMARK.md docs/BENCHMARK.json
-          git commit -m "docs: refresh detection head-to-head benchmark for ${{ github.event.release.tag_name }}" || echo "no changes"
-          git push || echo "push skipped"
+          git diff --cached --quiet && { echo "no change to publish"; exit 0; }
+          git commit -m "docs: refresh the detection head-to-head benchmark"
+          # leaderboard.yml pushes to the same branch. The concurrency group serializes
+          # us; rebase anyway rather than force or swallow the failure.
+          git pull --rebase --autostash origin "${{ github.event.repository.default_branch || 'main' }}"
+          git push origin "HEAD:${{ github.event.repository.default_branch || 'main' }}"
+      - name: Gate on parity (Signetry must keep 100% recall, 0 false positives)
+        run: |
+          # Last, deliberately: the regression is published above whatever this says,
+          # then this step fails the run so it cannot be missed.
+          signetry-eval corpus --min-recall 1.0 --max-fp 0

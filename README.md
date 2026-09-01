@@ -73,6 +73,36 @@ parity is table stakes; the **governance** Signetry adds on top (earned authorit
 injection quarantine, independent verifier, signed receipts) is what the scanners
 don't attempt, and is measured by the adversarial suite below.
 
+## The Agent Governance Leaderboard
+
+Detection is table stakes — several tools do it well, and the numbers above are public.
+The axis nobody publishes is **governance**: when the repository itself is hostile,
+does the agent's change still get admitted, and what does the defense cost in benign
+work?
+
+**[docs/LEADERBOARD.md](docs/LEADERBOARD.md)** publishes both axes on one page, and it
+takes submissions — so the governance axis can become a real comparison instead of a
+self-report. Three rules are enforced by the renderer rather than by good intentions:
+
+1. **A number nobody measured renders `—`, never `0%`** — that applies to us too.
+2. **Reproduced and self-reported never share a table.**
+3. **Every rate is printed next to its sample size.** 0% ASR over 5 scenarios is a
+   different claim from 0% over 500, and the reader gets to see which one this is.
+
+Two ways on:
+
+- **Submit an attack** that beats the governed pipeline. If it lands and the defense
+  fails, that is a published gap with your name on it. This is the contribution we
+  want most — see [`docs/SUBMITTING.md`](docs/SUBMITTING.md).
+- **Submit a system** — any agent-governance, guardrail, or admission tool, *including
+  one that beats Signetry*. A leaderboard only its author can win is marketing, and
+  everyone can tell.
+
+```bash
+signetry-eval leaderboard                    # governance axis (offline, seconds)
+signetry-eval leaderboard --with-detection   # both axes
+```
+
 ## Threat categories (mapped to the research)
 
 | Category | Threat | Basis |
@@ -93,6 +123,7 @@ signetry-eval run --json            # machine-readable
 signetry-eval run --category ipi    # one threat category
 signetry-eval list                  # list scenarios
 
+signetry-eval leaderboard           # the public two-axis leaderboard
 signetry-eval corpus                # detection head-to-head (recall, FP, by-language)
 signetry-eval corpus --markdown     # publishable comparison table
 signetry-eval corpus --semgrep      # add the optional Semgrep layer (report-only)
@@ -135,7 +166,8 @@ case or adapter move across the open-core line later — and you're **credited**
 [CONTRIBUTORS.md](CONTRIBUTORS.md). Start at the [good-first-issues board](https://github.com/Signetry/signetry/issues/10). The best contribution is **a new test case**. Add a detection
 **corpus case** (`signetry_eval/detection/corpus/`, with a cited `provenance`; SAFE
 decoys must stay 0 false positives) or an **adversarial scenario**
-(`signetry_eval/scenarios/`). See [CONTRIBUTING.md](CONTRIBUTING.md) and
+(`signetry_eval/scenarios/`). See [`docs/SUBMITTING.md`](docs/SUBMITTING.md) for the
+leaderboard paths, plus [CONTRIBUTING.md](CONTRIBUTING.md) and
 [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md). Every case ships with a test; CI gates the
 benchmark on 100% recall / 0 FP.
 

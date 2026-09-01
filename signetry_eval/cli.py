@@ -137,6 +137,47 @@ def cmd_list(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_leaderboard(args: argparse.Namespace) -> int:
+    """Render the two-axis governance leaderboard.
+
+    Axis 1 (governance) is always measured live — it is cheap and offline. Axis 2
+    (detection) needs the SAST engine and the competitor captures, so it is included
+    only when asked for, and its absence is stated on the page rather than faked.
+    """
+    from .leaderboard import leaderboard_json, load_entries, render_leaderboard
+
+    report = run_all(None)
+    entries = load_entries(args.entries) if args.entries else load_entries()
+
+    detection_md = None
+    if args.with_detection:
+        from .detection import render_corpus_markdown, run_corpus_head_to_head
+
+        try:
+            scores = run_corpus_head_to_head(
+                use_semgrep=args.semgrep,
+                claude_capture=args.claude_capture,
+                codex_capture=args.codex_capture,
+            )
+            detection_md = render_corpus_markdown(scores)
+        # Deliberately broad: any failure to run the detection axis must omit it with a
+        # warning. Emitting an empty or partial table would publish a zero for a
+        # scanner that never ran, which is the one thing this page must not do.
+        except Exception as exc:
+            print(f"warning: detection axis unavailable, omitting it: {exc}", file=sys.stderr)
+
+    if args.json:
+        print(json.dumps(leaderboard_json(report, entries=entries, version=args.version),
+                         indent=2, default=str))
+    else:
+        print(render_leaderboard(report, detection_markdown=detection_md,
+                                 entries=entries, version=args.version))
+
+    # Same gate as `run`: a leaderboard that renders while the defense is failing is
+    # a report, not a pass.
+    return 0 if report.overall()["defense_held_all"] else 1
+
+
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="signetry-eval", description="Signetry adversarial evaluation suite.")
     sub = p.add_subparsers(dest="command", required=True)
@@ -171,6 +212,17 @@ def build_parser() -> argparse.ArgumentParser:
     p_real.add_argument("--depth", type=int, default=1, help="Clone depth (default 1).")
     p_real.add_argument("--json", action="store_true", help="Emit results as JSON.")
     p_real.set_defaults(func=cmd_realrepo)
+
+    p_lb = sub.add_parser("leaderboard", help="Render the two-axis governance leaderboard (governance + optional detection).")
+    p_lb.add_argument("--with-detection", action="store_true", help="Also run the detection corpus and include axis 2 (needs the signetry-core SAST engine).")
+    p_lb.add_argument("--semgrep", action="store_true", help="Enable Signetry's Semgrep layer if installed (detection axis only).")
+    p_lb.add_argument("--claude-capture", help="Per-case JSON capture of claude-code-security-review output to replay.")
+    p_lb.add_argument("--codex-capture", help="Per-case JSON capture of @openai/codex-security output to replay.")
+    p_lb.add_argument("--entries", help="Directory of submitted leaderboard entries (default: leaderboard/entries).")
+    p_lb.add_argument("--version", help="Version label for the live signetry-core row.")
+    p_lb.add_argument("--markdown", action="store_true", help="Emit markdown (the default; accepted for symmetry with the other subcommands).")
+    p_lb.add_argument("--json", action="store_true", help="Emit the leaderboard as JSON instead of markdown.")
+    p_lb.set_defaults(func=cmd_leaderboard)
 
     p_list = sub.add_parser("list", help="List available scenarios.")
     p_list.add_argument("--category", choices=_CATEGORIES, help="Filter by threat category.")

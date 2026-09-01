@@ -25,14 +25,24 @@ def _rate(n: int, d: int) -> float:
     return round(n / d, 4) if d else 0.0
 
 
+def _pct(value: float | None) -> str:
+    """Render a rate, or an em dash when there was nothing to measure."""
+    return "—" if value is None else f"{value:.0%}"
+
+
 @dataclass
 class CategoryMetrics:
     category: str
     total: int = 0
     attack_scenarios: int = 0
-    asr_ungoverned: float = 0.0
-    asr_governed: float = 0.0
-    utility_governed: float = 0.0
+    # None means "not measured in this category", never 0. A category with no attack
+    # scenarios has no ASR, and one with no benign task has no utility figure —
+    # rendering either as 0% would be a green (or a red) on evidence that does not
+    # exist. Same rule the detection corpus uses for a scanner that did not run.
+    asr_ungoverned: float | None = None
+    asr_governed: float | None = None
+    utility_governed: float | None = None
+    utility_scenarios: int = 0
     demonstrated_gaps: int = 0
 
     def to_public(self) -> dict[str, Any]:
@@ -43,6 +53,7 @@ class CategoryMetrics:
             "asr_ungoverned": self.asr_ungoverned,
             "asr_governed": self.asr_governed,
             "utility_governed": self.utility_governed,
+            "utility_scenarios": self.utility_scenarios,
             "demonstrated_gaps": self.demonstrated_gaps,
         }
 
@@ -90,7 +101,10 @@ class Report:
                 m.asr_governed = _rate(
                     sum(1 for r in attacks if r.governed.attack_succeeded), len(attacks))
                 m.demonstrated_gaps = sum(1 for r in attacks if r.demonstrates_gap)
-            m.utility_governed = _rate(sum(1 for r in rs if r.utility_preserved), len(rs))
+            utils = [r for r in rs if r.category == CATEGORY_UTILITY]
+            m.utility_scenarios = len(utils)
+            if utils:
+                m.utility_governed = _rate(sum(1 for r in utils if r.utility_preserved), len(utils))
             out.append(m)
         return out
 
@@ -135,14 +149,27 @@ def render_markdown(report: Report) -> str:
     ]
     for c in report.by_category():
         lines.append(
-            f"| {c.category} | {c.total} | {c.asr_ungoverned:.0%} | "
-            f"{c.asr_governed:.0%} | {c.utility_governed:.0%} |"
+            f"| {c.category} | {c.total} | {_pct(c.asr_ungoverned)} | "
+            f"{_pct(c.asr_governed)} | {_pct(c.utility_governed)} |"
         )
-    lines += ["", "## Scenarios", ""]
+    lines += [
+        "",
+        "`—` means not measured in that category, not zero: a category with no attack "
+        "scenarios has no ASR, and one with no benign task has no utility figure.",
+        "",
+        "## Scenarios",
+        "",
+    ]
     for r in report.results:
-        u = "hit" if r.ungoverned.attack_succeeded else "safe"
-        g = "hit" if r.governed.attack_succeeded else "bounded"
-        lines.append(f"- **{r.id}** ({r.category}) — ungoverned: {u} · governed: {g}")
+        if r.category == CATEGORY_UTILITY:
+            # A benign task has no attack to succeed, so hit/safe/bounded would be
+            # meaningless here. Report what was actually measured.
+            state = "preserved" if r.utility_preserved else "**LOST**"
+            lines.append(f"- **{r.id}** ({r.category}) — benign task, utility: {state}")
+        else:
+            u = "hit" if r.ungoverned.attack_succeeded else "safe"
+            g = "hit" if r.governed.attack_succeeded else "bounded"
+            lines.append(f"- **{r.id}** ({r.category}) — ungoverned: {u} · governed: {g}")
         lines.append(f"  - {r.title} — _{r.threat}_")
         lines.append(f"  - governed: {r.governed.detail}")
     lines += ["", "---", "", report.to_public()["honesty_note"]]
