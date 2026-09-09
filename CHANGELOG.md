@@ -3,6 +3,51 @@
 Follows [Keep a Changelog](https://keepachangelog.com/) / [SemVer](https://semver.org/).
 Until `1.0.0` the public API may change between minor versions.
 
+## [Unreleased]
+
+### Fixed — the pages that publish the numbers could not publish
+
+`leaderboard.yml` and `benchmark.yml` regenerated their pages and pushed the result
+straight to `main`. `main` requires a pull request, so every run that actually had
+something to publish was rejected by branch protection (`GH006: Changes must be made
+through a pull request`) — the weekly refresh on 2026-09-07 and the `v0.3.0` release run
+on 2026-09-01 both failed at the push. The published numbers went stale rather than
+current: `docs/LEADERBOARD.json` still labelled the live row `0.7.0` after
+`pyproject.toml` had been pinned to `signetry-core v0.8.0`.
+
+Both workflows now **verify instead of publish**. Each regenerates its page, diffs it
+against what is committed, and fails if the committed page is stale; `permissions:`
+dropped from `contents: write` to `contents: read`, so neither can write to the repository
+at all. Refreshing is an ordinary pull request — a governance product whose own numbers
+arrive by a bot bypassing branch protection is arguing against its own thesis.
+
+- **Both gates were masked by the failure.** Each workflow ordered its gate — `signetry-eval
+  run` for the governed defenses, corpus parity for detection — *after* the push. A rejected
+  push aborts the job before the gate, so a broken defense or a detection regression would
+  have surfaced as a git error, or not at all. Both gates now carry
+  `if: ${{ !cancelled() && steps.regen.outcome == 'success' }}` and are judged whatever the
+  page check says.
+- **`benchmark.yml` had the same bug and looked green.** Its push step exited 0 on `no
+  change to publish`, so the protected-branch failure stayed invisible there until the
+  table actually changed.
+- **One recipe, in a `Makefile`.** CI inlined its own copy of the generation commands while
+  the page told readers to regenerate with `signetry-eval leaderboard --markdown` — which
+  omits `--with-detection` and `--version` and so produces a different page. Under a
+  regenerate-and-diff check, that drift is a stale-page failure nobody could explain from
+  the log. `make leaderboard` and `make benchmark` are now the single recipe: for CI, for
+  contributors, and in the instructions printed on the page itself. The generated headers
+  name that recipe.
+- **`pyproject.toml` is now a trigger path for both.** The pinned `signetry-core` is the
+  live row's version label, so bumping the pin without refreshing was precisely the
+  staleness that went unnoticed. Both workflows also verify on `pull_request`, so a stale
+  page blocks the merge instead of being found a week later by the schedule.
+- **A regeneration that regenerates nothing now fails.** `make leaderboard` in a tree with
+  no Makefile does not error: `leaderboard/` is a real directory here, so make calls the
+  target up to date and exits 0 with "Nothing to be done". That is the same shape as the
+  push step that exited 0 on "no change to publish" — a step that reports success without
+  doing its job — so both workflows confirm the recipe is present before trusting it.
+- `make verify-published-numbers` reproduces the whole check locally.
+
 ## [0.3.0] — 2026-09-01
 
 ### Added — the Agent Governance Leaderboard
