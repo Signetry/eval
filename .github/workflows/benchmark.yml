@@ -55,6 +55,7 @@ jobs:
             exit 1
           }
       - name: Regenerate the head-to-head table
+        id: regen
         run: |
           mkdir -p docs
           {
@@ -82,6 +83,9 @@ jobs:
           git pull --rebase --autostash origin "${{ github.event.repository.default_branch || 'main' }}"
           git push origin "HEAD:${{ github.event.repository.default_branch || 'main' }}"
       - name: Gate on parity (Signetry must keep 100% recall, 0 false positives)
+        # Must run even when publishing failed — see the same guard in leaderboard.yml.
+        # Without it a rejected push aborts the job before the regression is judged.
+        if: ${{ !cancelled() && steps.regen.outcome == 'success' }}
         run: |
           # Last, deliberately: the regression is published above whatever this says,
           # then this step fails the run so it cannot be missed.

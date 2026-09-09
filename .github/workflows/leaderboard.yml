@@ -63,6 +63,7 @@ jobs:
           fi
 
       - name: Regenerate the leaderboard
+        id: regen
         run: |
           mkdir -p docs
           # Record WHICH signetry-core produced the live row. A leaderboard that says
@@ -111,6 +112,12 @@ jobs:
           git push origin "HEAD:${{ github.event.repository.default_branch || 'main' }}"
 
       - name: Gate — every governed defense must hold
+        # Must run even when publishing failed. Ordering this step last is deliberate,
+        # but `if:` is what makes the ordering safe: a rejected push aborts the job
+        # before the gate, so a broken defense would surface as a git error and the
+        # defense itself would never be judged. Skipped only when regeneration did not
+        # produce numbers to judge in the first place.
+        if: ${{ !cancelled() && steps.regen.outcome == 'success' }}
         run: |
           # Last, deliberately: the page is published above whatever this says, then this
           # step fails the run so a broken defense is impossible to miss.
