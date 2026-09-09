@@ -63,11 +63,18 @@ jobs:
     steps:
       - uses: actions/checkout@v7
         with:
-          # On a pull request, check out the pull request (checkout's default for the
-          # event) — verifying the default branch would say nothing about the change under
-          # review. Otherwise pin the default branch: on a release event the incoming ref
-          # is the tag, which is not where the table is committed.
-          ref: ${{ github.event_name == 'pull_request' && '' || (github.event.repository.default_branch || 'main') }}
+          # Verify the ref that triggered us. On a pull request that is `refs/pull/N/merge`
+          # — the merge result, which is what actually lands — because verifying the default
+          # branch would say nothing about the change under review. The one exception is a
+          # release: its ref is the tag, which is not where the table is committed.
+          #
+          # The *release* case is the true branch on purpose. The obvious spelling,
+          # `event_name == 'pull_request' && '' || default_branch`, is a trap: Actions' `&&`
+          # and `||` yield operand values rather than booleans, so a falsy true branch ('')
+          # collapses to the false branch and *every* event checks out the default branch.
+          # This workflow shipped that bug for one run: PR #39 verified `main` instead of
+          # itself. Both branches here are non-empty strings.
+          ref: ${{ github.event_name == 'release' && (github.event.repository.default_branch || 'main') || github.ref }}
       - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
@@ -84,6 +91,16 @@ jobs:
           # The recipe refuses to run without the signetry-core detection engine. That
           # matters more here than anywhere else: this benchmark has no meaning without the
           # scanner, and an absent scanner must never be published as a zero.
+          # The checked-out tree must be the one that carries the recipe. `make benchmark`
+          # without a Makefile does not necessarily fail: `benchmark` can name a real path in
+          # this repository, in which case make treats the target as already up to date and
+          # exits 0 — "Nothing to be done for 'benchmark'". A regeneration step that silently
+          # regenerates nothing is the same class of bug as the push step that silently
+          # exited 0 on "no change to publish", so check before trusting it.
+          test -f Makefile || {
+            echo "::error::No Makefile in the checked-out tree — regeneration would silently do nothing. Wrong ref?"
+            exit 1
+          }
           make benchmark
 
       - uses: actions/upload-artifact@v7

@@ -85,6 +85,65 @@ def test_the_workflow_uses_the_shared_recipe(workflow: str, target: str, page: s
 
 
 @pytest.mark.parametrize("workflow,target,page", OWNERSHIP)
+def test_the_checkout_ref_is_not_a_falsy_ternary(workflow: str, target: str, page: str):
+    """`A && '' || B` is always B, so the workflow would verify the wrong tree.
+
+    Actions' `&&` and `||` yield operand values rather than booleans, which makes the
+    familiar ternary spelling a trap whenever the true branch is falsy: an empty string
+    collapses straight through to the false branch. Both of these workflows shipped exactly
+    that for one run, and PR #39 verified `main` instead of itself — the check passed and
+    proved nothing about the change under review.
+    """
+    # Comments only, and the comment above the ref quotes the trap to explain it.
+    code = "\n".join(_code_lines((WORKFLOWS / workflow).read_text()))
+    for trap in ("&& '' ||", '&& "" ||', "&& ''||"):
+        assert trap not in code, (
+            f"{workflow} uses a ternary with an empty true branch. Actions evaluates "
+            f"`cond && '' || other` to `other` for every event, so the ref this resolves to "
+            "is not the one it looks like. Give the true branch a non-empty value."
+        )
+
+
+@pytest.mark.parametrize("workflow,target,page", OWNERSHIP)
+def test_the_pull_request_run_verifies_the_pull_request(workflow: str, target: str, page: str):
+    """A verification that checks out the default branch on a PR verifies nothing.
+
+    `github.ref` is `refs/pull/N/merge` on a pull request — the merge result, which is what
+    actually lands. Only a release needs the override, because its ref is the tag rather
+    than the branch the page is committed on.
+    """
+    text = (WORKFLOWS / workflow).read_text()
+    ref = re.search(r"^\s+ref: (.+)$", text, re.M)
+    assert ref, f"{workflow} must pin the checkout ref explicitly"
+    expr = ref.group(1)
+    assert "github.ref" in expr, (
+        f"{workflow} must verify the triggering ref (so a PR verifies itself); got {expr!r}"
+    )
+    assert "release" in expr, (
+        f"{workflow} must special-case the release event, whose ref is the tag and not where "
+        f"the page is committed; got {expr!r}"
+    )
+
+
+@pytest.mark.parametrize("workflow,target,page", OWNERSHIP)
+def test_the_workflow_refuses_a_tree_that_lacks_the_recipe(workflow: str, target: str, page: str):
+    """`make <target>` can exit 0 having done nothing at all.
+
+    With no Makefile in the tree, make falls back to implicit rules — and `leaderboard` is a
+    real directory in this repository, so make calls the target up to date and prints
+    "Nothing to be done for 'leaderboard'" with status 0. That is how a run regenerated
+    nothing, uploaded the committed page as its artifact, and still reported the
+    regeneration step green. Same shape as the push step that exited 0 on "no change to
+    publish": a step that succeeds without doing its job.
+    """
+    code = "\n".join(_code_lines((WORKFLOWS / workflow).read_text()))
+    assert "test -f Makefile" in code, (
+        f"{workflow} must confirm the recipe is present before running it — otherwise a "
+        "wrong-tree checkout regenerates nothing and still passes."
+    )
+
+
+@pytest.mark.parametrize("workflow,target,page", OWNERSHIP)
 def test_the_gate_cannot_be_masked_by_an_earlier_failure(workflow: str, target: str, page: str):
     text = (WORKFLOWS / workflow).read_text()
     assert "id: regen" in text, f"{workflow} needs an id on the regeneration step for the gate to key off"

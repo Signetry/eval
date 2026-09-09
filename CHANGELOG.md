@@ -41,6 +41,11 @@ arrive by a bot bypassing branch protection is arguing against its own thesis.
   live row's version label, so bumping the pin without refreshing was precisely the
   staleness that went unnoticed. Both workflows also verify on `pull_request`, so a stale
   page blocks the merge instead of being found a week later by the schedule.
+- **A regeneration that regenerates nothing now fails.** `make leaderboard` in a tree with
+  no Makefile does not error: `leaderboard/` is a real directory here, so make calls the
+  target up to date and exits 0 with "Nothing to be done". That is the same shape as the
+  push step that exited 0 on "no change to publish" — a step that reports success without
+  doing its job — so both workflows confirm the recipe is present before trusting it.
 - `make verify-published-numbers` reproduces the whole check locally.
 
 ## [0.3.0] — 2026-09-01
