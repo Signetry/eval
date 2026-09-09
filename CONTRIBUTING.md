@@ -83,6 +83,42 @@ signetry-eval corpus --min-recall 1.0 --max-fp 0
 CI runs that same gate whenever the installed `signetry-core` exposes the detection
 engine (`scan_repository`), and the release workflow enforces it unconditionally.
 
+## The published pages are generated
+
+`docs/LEADERBOARD.{md,json}` and `docs/BENCHMARK.{md,json}` are build output that is
+committed, so anyone can read the numbers without installing anything. Do not hand-edit
+them — each one's first line names the recipe that writes it.
+
+There is exactly one recipe, and both you and CI run it:
+
+```bash
+make leaderboard           # docs/LEADERBOARD.{md,json}
+make benchmark             # docs/BENCHMARK.{md,json}
+make published-numbers     # both
+make help                  # every target
+```
+
+If your change touches an input to either page — a scenario, a corpus case, the renderers,
+or the pinned `signetry-core` in `pyproject.toml` — refresh the pages in the same pull
+request:
+
+```bash
+make published-numbers
+git add docs/ && git commit -m "docs: refresh the published numbers"
+```
+
+`.github/workflows/leaderboard.yml` and `.github/workflows/benchmark.yml` regenerate the
+pages themselves and **fail if what you committed differs**, so a stale page blocks the
+merge instead of quietly misreporting. To see what CI will see before you push:
+
+```bash
+make verify-published-numbers
+```
+
+CI has read-only access and never pushes: the numbers reach `main` through a pull request
+like every other change. A governance product whose own numbers arrived by a bot bypassing
+branch protection would be arguing against its own thesis.
+
 ## Running the suite
 
 ```bash
@@ -114,6 +150,8 @@ scenario, so it doubles as a CI regression guard.
 4. Keep it **deterministic and offline**: a scripted adversary that models a
    non-compliant agent. No network, no API keys.
 5. Add a test under `tests/`.
+6. Run `make published-numbers` and commit the refreshed pages — a new scenario changes
+   the leaderboard's denominators, and CI fails the PR if the committed page is stale.
 
 No governance logic belongs in this repo — it is imported from `signetry-core`. This
 repo poses attacks and scores outcomes.
@@ -134,6 +172,9 @@ repo poses attacks and scores outcomes.
    SAFE decoy**: any finding on it counts as a false positive.
 4. Case ids must be unique across families (the package asserts this on import).
 5. Run `signetry-eval corpus --min-recall 1.0 --max-fp 0` and add a test.
+6. Run `make published-numbers` and commit the refreshed pages — a new case changes both
+   the head-to-head table and the leaderboard's detection axis, and CI fails the PR if
+   either committed page is stale.
 
 A SAFE decoy that exposes a real false positive is a *good* result — it is how `LANG-60`
 caught a bug in the engine's Go SSRF rule (see `CHANGELOG.md`).
